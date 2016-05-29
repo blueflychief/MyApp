@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MyApp</string>
+
+
+    <string name="hint_network_error">网络错误，请检查网络设置</string>
+    <string name="hint_data_error">数据错误，请稍候重试</string>
+    <string name="hint_operation_error">操作失败，请稍候重试</string>
+</resources>
