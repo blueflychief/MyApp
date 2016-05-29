@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 
 import com.infinite.myapp.config.AppConfig;
-import com.infinite.myapp.utils.MyLogger;
 import com.infinite.myapp.utils.network.Excalibur;
 
 
@@ -30,7 +29,6 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        MyLogger.e("KKUserApplication--->>onCreate()");
         sINSTANCE = this;
         Excalibur.getInstance().init(this, AppConfig.APP_ROOT_URL);
 //        //JPush config

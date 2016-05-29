@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "KKCoachPad.db";
+    public static final String DATABASE_NAME = "MyApp.db";
     public static final int DB_VERSION = 1;
 
     public DatabaseHelper(Context context) {
