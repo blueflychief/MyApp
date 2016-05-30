@@ -95,27 +95,72 @@ public class AppBar extends Toolbar {
                 continue;
             }
             if (i == 0) {
-                ActionBar.LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, Gravity.LEFT | Gravity.CENTER_VERTICAL);
-                mLeftView = initMenuVIew(context, menuId);
-                addView(mLeftView, lp);
+                setLeftMenu(context, menuId);
                 continue;
             }
             if (i == 1) {
-                ActionBar.LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, Gravity.RIGHT | Gravity.CENTER_VERTICAL);
-                mRightView = initMenuVIew(context, menuId);
-                addView(mRightView, lp);
+                setRightMenu(context, menuId);
                 continue;
             }
 
             if (i == 2) {
-                ActionBar.LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, Gravity.CENTER | Gravity.CENTER_VERTICAL);
-                mCenterView = initMenuVIew(context, menuId);
-                addView(mCenterView, lp);
+                setCenterMenu(context, menuId);
             }
         }
     }
 
-    public String getTitleString() {
+
+    /**
+     * 设置中间的Menu
+     *
+     * @param context
+     * @param menuId
+     */
+    public void setCenterMenu(Context context, int menuId) {
+        setMenu(context, Gravity.CENTER, menuId);
+    }
+
+
+    /**
+     * 设置右边的Menu
+     *
+     * @param context
+     * @param menuId
+     */
+    public void setRightMenu(Context context, int menuId) {
+        setMenu(context, Gravity.RIGHT, menuId);
+    }
+
+
+    /**
+     * 设置左边的Menu
+     *
+     * @param context
+     * @param menuId
+     */
+    public void setLeftMenu(Context context, int menuId) {
+        setMenu(context, Gravity.LEFT, menuId);
+    }
+
+    private void setMenu(Context context, int gravity, int menuId) {
+        ActionBar.LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, gravity | Gravity.CENTER_VERTICAL);
+        switch (gravity) {
+            case Gravity.LEFT:
+                mLeftView = initMenuVIew(context, menuId);
+                addView(mLeftView, lp);
+                break;
+            case Gravity.RIGHT:
+                mRightView = initMenuVIew(context, menuId);
+                addView(mRightView, lp);
+                break;
+            case Gravity.CENTER:
+                mCenterView = initMenuVIew(context, menuId);
+                addView(mCenterView, lp);
+                break;
+        }
+    }
+
+    public String getToolbarTitle() {
         return mTitle;
     }
 
@@ -195,29 +240,20 @@ public class AppBar extends Toolbar {
 
     public
     @CheckResult
-    View getMenuLfet() {
-        if (mLeftView != null) {
-            return mLeftView;
-        }
-        return null;
+    View getLfetMenu() {
+        return mLeftView != null ? mLeftView : null;
     }
 
     public
     @CheckResult
-    View getMenuRight() {
-        if (mRightView != null) {
-            return mRightView;
-        }
-        return null;
+    View getRighMenut() {
+        return mRightView != null ? mRightView : null;
     }
 
     public
     @CheckResult
-    View getMenuCenter() {
-        if (mCenterView != null) {
-            return mCenterView;
-        }
-        return null;
+    View getCenterMenu() {
+        return mCenterView != null ? mCenterView : null;
     }
 
 

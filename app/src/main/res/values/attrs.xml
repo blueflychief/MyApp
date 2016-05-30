@@ -34,4 +34,13 @@
         <attr name="matProg_barWidth" format="dimension" />
         <attr name="matProg_linearProgress" format="boolean" />
     </declare-styleable>
+
+
+    <declare-styleable name="LoadingLayout">
+        <attr name="loadingView" format="reference" />
+        <attr name="errorView" format="reference" />
+        <attr name="retryView" format="reference" />
+        <attr name="emptyView" format="reference" />
+        <attr name="networkErrorView" format="reference" />
+    </declare-styleable>
 </resources>

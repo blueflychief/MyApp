@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.infinite.myapp.MainActivity">
 
     <com.infinite.myapp.view.AppBar
-        android:id="@+id/toolbar"
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height_normal"
-        app:center_title="Title"
-        app:menu_center="@layout/menu_view"
         app:navigationGravity="center_vertical" />
 
-    <RelativeLayout
-        android:layout_below="@+id/toolbar"
-        android:id="@+id/rl_container"
+    <com.infinite.myapp.view.LoadingLayout
+        android:id="@+id/ll_loading"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </RelativeLayout>
-</RelativeLayout>
+        android:layout_height="match_parent"/>
+</LinearLayout>

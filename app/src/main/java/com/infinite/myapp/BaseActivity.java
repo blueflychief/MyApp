@@ -6,31 +6,30 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.infinite.myapp.utils.LoadingUtils;
+import com.infinite.myapp.view.AppBar;
+import com.infinite.myapp.view.LoadingLayout;
 
 /**
  * Created by Administrator on 2016-05-29.
  */
 public abstract class BaseActivity extends AppCompatActivity {
+
+    protected LoadingLayout mContentPanel;
+    protected AppBar mAppBar;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getLayoutId());
-        findViews();
+        setContentView(R.layout.activity_base_layout);
+        mContentPanel = (LoadingLayout) findViewById(R.id.ll_loading);
+        mAppBar = (AppBar) findViewById(R.id.app_bar);
+        getLayoutInflater().inflate(getLayoutId(), mContentPanel);
+        findViews(mContentPanel);
         getData();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
 
-
-    }
-
-
-    public abstract int getLayoutId();
-
-
-    public void findViews() {
+    public void findViews(LoadingLayout contentPanel) {
     }
 
     public void getData() {
@@ -44,6 +43,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
+    public abstract int getLayoutId();
+
     public void initData(Intent intent) {
 
     }
@@ -52,6 +53,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+    }
 
     @Override
     protected void onPause() {

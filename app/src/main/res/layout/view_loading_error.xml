@@ -12,17 +12,17 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:tag="no_network"
-        android:text="@string/hint_network_error"
+        android:text="@string/hint_data_error"
         android:textColor="@color/public_text_hint_color"
         android:textSize="@dimen/font_size_16sp" />
 
 
     <ImageView
-        android:id="@+id/iv_check_network"
+        android:id="@+id/iv_retry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_network_error"
         android:padding="@dimen/padding_10"
-        android:src="@mipmap/icon_netwrok_error" />
+        android:src="@mipmap/icon_error" />
 
 </LinearLayout>

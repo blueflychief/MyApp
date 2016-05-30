@@ -1,49 +1,39 @@
 package com.infinite.myapp;
 
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout;
+import android.content.Intent;
+import android.os.Handler;
 
-import com.infinite.myapp.view.AppBar;
-import com.infinite.myapp.view.LoadingHintView;
+import com.infinite.myapp.view.LoadingLayout;
 
 public class MainActivity extends BaseActivity {
-    private AppBar appBar;
-    private RelativeLayout rl_container;
-    LoadingHintView loadingHintView=null;
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_main;
+        return R.layout.activity_main_layout;
     }
 
     @Override
-    public void findViews() {
-        super.findViews();
-        loadingHintView=new LoadingHintView(this);
-        appBar = (AppBar) findViewById(R.id.toolbar);
-        rl_container = (RelativeLayout) findViewById(R.id.rl_container);
-        //左侧导航按钮
-        ImageButton imageButton = appBar.getNavButton();
-        if (imageButton != null) {
-            imageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                }
-            });
-        }
-
-        appBar.getMenuCenter().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingHintView.showHintView(LoadingHintView.LoadingStatus.LOADING);
-            }
-        });
+    public void findViews(LoadingLayout contentPanel) {
+        super.findViews(contentPanel);
+        mAppBar.setToolbarTitle("我是主页");
+//        mAppBar.setRightMenu(this,R.layout.menu_view);
+//        mAppBar.setVisibility(View.GONE);
     }
 
+    @Override
+    public void initData(Intent intent) {
+        super.initData(intent);
+        mContentPanel.showLoading();
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mContentPanel.showContent();
+            }
+        }, 4000);
     }
 }
