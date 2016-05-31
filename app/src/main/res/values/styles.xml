@@ -62,7 +62,7 @@
     <!-- toolbar 的标题字体 -->
     <style name="TextAppearance.AppCompat.Title.Toolbar" parent="TextAppearance.AppCompat.Title">
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <!-- toolbar上面的menu整体样式 -->
@@ -70,9 +70,9 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
         <!-- 这里可以设置最小的宽度 -->
-        <item name="android:minWidth">@dimen/menuWidth</item>
-        <item name="android:paddingLeft">12dp</item>
-        <item name="android:paddingRight">12dp</item>
+        <item name="android:minWidth">@dimen/menuWidth_48dp</item>
+        <item name="android:paddingLeft">@dimen/padding_6</item>
+        <item name="android:paddingRight">@dimen/padding_6</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/menu_selector</item>
         <item name="android:scaleType">center</item>

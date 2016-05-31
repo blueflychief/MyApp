@@ -1,10 +1,11 @@
-package com.infinite.myapp;
+package com.infinite.myapp.base;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.infinite.myapp.R;
 import com.infinite.myapp.utils.LoadingUtils;
 import com.infinite.myapp.view.AppBar;
 import com.infinite.myapp.view.LoadingLayout;
@@ -23,6 +24,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_base_layout);
         mContentPanel = (LoadingLayout) findViewById(R.id.ll_loading);
         mAppBar = (AppBar) findViewById(R.id.app_bar);
+        //必须在setSupportActionBar之前调用
+        mAppBar.setTitle("");
+        mAppBar.setNavigationIcon(R.mipmap.icon_navigation_left);
+        setSupportActionBar(mAppBar);
         getLayoutInflater().inflate(getLayoutId(), mContentPanel);
         findViews(mContentPanel);
         getData();

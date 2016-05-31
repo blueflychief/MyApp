@@ -4,7 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="toolbar_height_small">42dp</dimen>
     <dimen name="toolbar_height_normal">48dp</dimen>
-    <dimen name="menuWidth">48dp</dimen>
+    <dimen name="menuWidth_24dp">24dp</dimen>
+    <dimen name="menuWidth_48dp">48dp</dimen>
 
     <dimen name="font_size_1dp">1dp</dimen>
     <dimen name="font_size_2dp">2dp</dimen>

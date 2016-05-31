@@ -12,6 +12,7 @@ import android.support.annotation.StringRes;
 import android.support.annotation.StyleableRes;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -32,8 +33,8 @@ import java.util.List;
 public class AppBar extends Toolbar {
 
     private String mTitle = null;
-    private int mTitleSize = 18;
-    private int mTitleColor;
+    private int mTitleSize = 20;
+    private int mTitleColor= Color.WHITE;
     private static final String TAG = "AppBar";
 
     private LayoutParams MENU_LP;
@@ -65,7 +66,7 @@ public class AppBar extends Toolbar {
         final String navBtnGravity = a.getString(R.styleable.AppBar_navigationGravity);
         mTitle = a.getString(R.styleable.AppBar_center_title);
         mTitleSize = a.getDimensionPixelSize(R.styleable.AppBar_center_title_size, mTitleSize);
-        mTitleColor = a.getColor(R.styleable.AppBar_center_title_color, Color.BLACK);
+        mTitleColor = a.getColor(R.styleable.AppBar_center_title_color,mTitleColor);
         final int[] styleableResIds = {
                 R.styleable.AppBar_menu_left,
                 R.styleable.AppBar_menu_right,
@@ -176,6 +177,8 @@ public class AppBar extends Toolbar {
         textView.setTextSize(mTitleSize);
         textView.setText(title);
         textView.setGravity(Gravity.CENTER);
+        TextPaint tp = textView.getPaint();
+        tp.setFakeBoldText(true);
         LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, Gravity.CENTER);
         addView(textView, layoutParams);
     }

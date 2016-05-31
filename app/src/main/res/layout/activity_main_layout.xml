@@ -1,14 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical">
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/id_viewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+    </android.support.v4.view.ViewPager>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/public_divider_line_color"
+        />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="我是主页"
-        android:textSize="@dimen/font_size_40sp" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal">
+
+        <com.infinite.myapp.view.MyNavigationButton
+            android:id="@+id/id_indicator_one"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+            app:nav_icon="@mipmap/ic_menu_start_conversation"
+            app:nav_text="@string/tab_weixin"
+            app:nav_text_size="12sp" />
+
+        <com.infinite.myapp.view.MyNavigationButton
+            android:id="@+id/id_indicator_two"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+            app:nav_icon="@mipmap/ic_menu_friendslist"
+            app:nav_text="@string/tab_contact"
+            app:nav_text_size="12sp" />
+
+        <com.infinite.myapp.view.MyNavigationButton
+            android:id="@+id/id_indicator_three"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+            app:nav_icon="@mipmap/ic_menu_emoticons"
+            app:nav_text="@string/tab_find"
+            app:nav_text_size="12sp" />
+
+        <com.infinite.myapp.view.MyNavigationButton
+            android:id="@+id/id_indicator_four"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+            app:nav_icon="@mipmap/ic_menu_allfriends"
+            app:nav_text="@string/tab_me"
+            app:nav_text_size="12sp" />
+    </LinearLayout>
 </LinearLayout>

@@ -46,7 +46,11 @@ public class LoadingLayout extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        initAllViews();
 
+    }
+
+    private void initAllViews() {
         for (int i = 0; i < getChildCount() - 1; i++) {
             getChildAt(i).setVisibility(GONE);
         }

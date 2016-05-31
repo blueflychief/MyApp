@@ -35,12 +35,21 @@
         <attr name="matProg_linearProgress" format="boolean" />
     </declare-styleable>
 
-
+    <!--加载状态布局-->
     <declare-styleable name="LoadingLayout">
         <attr name="loadingView" format="reference" />
         <attr name="errorView" format="reference" />
         <attr name="retryView" format="reference" />
         <attr name="emptyView" format="reference" />
         <attr name="networkErrorView" format="reference" />
+    </declare-styleable>
+
+
+    <!--底部导航按钮-->
+    <declare-styleable name="MyNavigationButton">
+        <attr name="nav_icon" format="reference" />
+        <attr name="nav_color" format="color" />
+        <attr name="nav_text" format="string" />
+        <attr name="nav_text_size" format="dimension" />
     </declare-styleable>
 </resources>
