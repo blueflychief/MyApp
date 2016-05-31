@@ -97,6 +97,7 @@ public class MyNavigationButton extends View {
         mTextPaint = new Paint();
         mTextPaint.setTextSize(mTextSize);
         mTextPaint.setColor(0xff555555);
+        mTextPaint.setAntiAlias(true);
         // 得到text绘制范围
         mTextPaint.getTextBounds(mText, 0, mText.length(), mTextBound);
 

@@ -3,7 +3,6 @@ package com.infinite.myapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -12,7 +11,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.infinite.myapp.base.BaseActivity;
-import com.infinite.myapp.fragment.TabFragment;
+import com.infinite.myapp.fragment.TabFragment1;
 import com.infinite.myapp.fragment.TabFragment2;
 import com.infinite.myapp.fragment.TabFragment3;
 import com.infinite.myapp.fragment.TabFragment4;
@@ -28,7 +27,7 @@ import java.util.List;
 public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener, View.OnClickListener, ViewPager.OnPageChangeListener {
     private ViewPager mViewPager;
     private List<Fragment> mTabs = new ArrayList<Fragment>();
-    private FragmentPagerAdapter mAdapter;
+    private MainPagerAdapter mAdapter;
     private List<Integer> mTabIds = new ArrayList<>();
     private List<MyNavigationButton> mTabButtons = new ArrayList<MyNavigationButton>();
     private int mCurrentId = 0;
@@ -171,44 +170,34 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     }
 
     private void initViewPager() {
-        TabFragment tabFragment = new TabFragment();
-        Bundle args = new Bundle();
-        args.putString("title", mTitles[0]);
-        tabFragment.setArguments(args);
-        mTabs.add(tabFragment);
+        TabFragment1 tabFragment1 = new TabFragment1();
+        Bundle args1 = new Bundle();
+        args1.putString("title", mTitles[0]);
+        tabFragment1.setArguments(args1);
+        mTabs.add(tabFragment1);
 
         TabFragment2 tabFragment2 = new TabFragment2();
         Bundle args2 = new Bundle();
-        args.putString("title", mTitles[1]);
-        tabFragment.setArguments(args2);
+        args2.putString("title", mTitles[1]);
+        tabFragment2.setArguments(args2);
         mTabs.add(tabFragment2);
 
         TabFragment3 tabFragment3 = new TabFragment3();
         Bundle args3 = new Bundle();
-        args.putString("title", mTitles[2]);
-        tabFragment.setArguments(args3);
+        args3.putString("title", mTitles[2]);
+        tabFragment3.setArguments(args3);
         mTabs.add(tabFragment3);
 
         TabFragment4 tabFragment4 = new TabFragment4();
         Bundle args4 = new Bundle();
-        args.putString("title", mTitles[3]);
-        tabFragment.setArguments(args4);
+        args4.putString("title", mTitles[3]);
+        tabFragment4.setArguments(args4);
         mTabs.add(tabFragment4);
 
-        mAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
-
-            @Override
-            public int getCount() {
-                return mTabs.size();
-            }
-
-            @Override
-            public Fragment getItem(int arg0) {
-                return mTabs.get(arg0);
-            }
-        };
+        mAdapter = new MainPagerAdapter(getSupportFragmentManager(), this, mTabs, mTitles);
 
         initTabIndicator();
+        mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOnPageChangeListener(this);
     }

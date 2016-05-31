@@ -6,11 +6,5 @@
     android:gravity="center"
     android:orientation="horizontal"
     android:paddingBottom="15dp"
-    android:paddingTop="15dp">
+    android:paddingTop="15dp"/>
 
-    <View
-        android:layout_width="100dp"
-        android:background="@color/color_primary_green"
-        android:layout_height="100dp" />
-
-</LinearLayout>

@@ -23,6 +23,12 @@ public abstract class BaseFragment extends Fragment {
     private SparseArray<View> mViews;
     protected LoadingLayout mContentPanel = null;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,8 +98,6 @@ public abstract class BaseFragment extends Fragment {
             MyLogger.i("*****lazyLoadData--inVisible" + this.getClass().getSimpleName());
             mContentPanel.showEmpty();
         }
-
-        MyLogger.i("*****&&&&&&&&&&&isFirstLoad"+isFirstLoad+"-----" + this.getClass().getSimpleName());
     }
 
     /**

@@ -4,13 +4,14 @@ import android.widget.TextView;
 
 import com.infinite.myapp.R;
 import com.infinite.myapp.base.BaseFragment;
+import com.infinite.myapp.utils.MyLogger;
 
-public class TabFragment extends BaseFragment {
+public class TabFragment1 extends BaseFragment {
     private String mTitle = "Default";
     private TextView textView;
 
 
-    public TabFragment() {
+    public TabFragment1() {
     }
 
     @Override
@@ -29,5 +30,6 @@ public class TabFragment extends BaseFragment {
             mTitle = getArguments().getString("title");
         }
         textView.setText(mTitle);
+        MyLogger.i("*****lazyLoadData--finish first load*****" + this.getClass().getSimpleName());
     }
 }

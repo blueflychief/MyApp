@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 
 import com.infinite.myapp.R;
 import com.infinite.myapp.utils.KKClickListener;
+import com.infinite.myapp.utils.MyLogger;
 
 /**
  * Created by Administrator on 2016-05-30.
@@ -47,7 +48,6 @@ public class LoadingLayout extends FrameLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         initAllViews();
-
     }
 
     private void initAllViews() {
@@ -81,22 +81,27 @@ public class LoadingLayout extends FrameLayout {
 
     public void showLoading() {
         showView(0);
+        MyLogger.i("------showloading");
     }
 
     public void showLoadingError() {
         showView(1);
+        MyLogger.i("------showLoadingError");
     }
 
     public void showNetworkError() {
         showView(2);
+        MyLogger.i("------showNetworkError");
     }
 
     public void showEmpty() {
         showView(3);
+        MyLogger.i("------showEmpty");
     }
 
     public void showContent() {
         showView(4);
+        MyLogger.i("------showContent");
     }
 
     private void showView(int type) {
