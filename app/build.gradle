@@ -16,7 +16,7 @@ android {
             buildConfigField("boolean", "DEVELOPING", "true")
             buildConfigField("boolean", "DEVELOPED", "true")
             buildConfigField("boolean", "MY_LOG", "true")
-            buildConfigField("String", "API_HOST", "\"http://www.baidu.com/\"")
+            buildConfigField("String", "API_HOST", "\"http://sw.bos.baidu.com\"")
             versionNameSuffix "-debug"
 //            signingConfig signingConfigs.config
             minifyEnabled false

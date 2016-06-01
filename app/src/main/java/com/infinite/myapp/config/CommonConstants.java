@@ -10,5 +10,4 @@ public class CommonConstants {
     public static final String HOTPOT_COMPAT_ATTR_NAME = "minContainerVersion";
 
     public static final int HOTPOT_CONTAINER_VERSION_SEGMENT_COUNT = 3;
-    public static final String HOTPOT_COMPONENT_APP_UPDATE_INTENT_FILTER = "com.kk.user.update.filter";
 }

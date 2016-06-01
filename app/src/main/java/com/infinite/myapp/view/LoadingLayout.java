@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.infinite.myapp.R;
-import com.infinite.myapp.utils.KKClickListener;
+import com.infinite.myapp.utils.MyClickListener;
 import com.infinite.myapp.utils.MyLogger;
 
 /**
@@ -55,9 +55,9 @@ public class LoadingLayout extends FrameLayout {
             getChildAt(i).setVisibility(GONE);
         }
 
-        findViewById(R.id.iv_retry).setOnClickListener(new KKClickListener() {
+        findViewById(R.id.iv_retry).setOnClickListener(new MyClickListener() {
             @Override
-            protected void onKKClick(View v) {
+            protected void onNotFastClick(View v) {
                 if (null != onRetryClickListener) {
                     onRetryClickListener.onRetryClick(v);
                 }
@@ -65,9 +65,9 @@ public class LoadingLayout extends FrameLayout {
         });
 
 
-        findViewById(R.id.iv_check_network).setOnClickListener(new KKClickListener() {
+        findViewById(R.id.iv_check_network).setOnClickListener(new MyClickListener() {
             @Override
-            protected void onKKClick(View v) {
+            protected void onNotFastClick(View v) {
                 if (null != onRetryClickListener) {
                     onRetryClickListener.onCheckNetworkClick(v);
                 }

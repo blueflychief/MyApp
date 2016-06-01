@@ -21,11 +21,11 @@ public class MyDialogFragment extends DialogFragment {
     private TextView mTvMessage;
 
     public static MyDialogFragment createDialogFragment(String message) {
-        MyDialogFragment kkDialogFragment = new MyDialogFragment();
+        MyDialogFragment myDialogFragment = new MyDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString(KEY_MESSAGE, message);
-        kkDialogFragment.setArguments(bundle);
-        return kkDialogFragment;
+        myDialogFragment.setArguments(bundle);
+        return myDialogFragment;
     }
 
 

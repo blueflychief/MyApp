@@ -131,14 +131,13 @@ public class PackageUtils {
         return version;
     }
 
-    public static String getAllModuleVersionDescription() {
+    public static String getAllModuleVersionDescription(String intent_filter) {
         JSONArray moduleArray = new JSONArray();
         Context context = MyApplication.getInstance().getApplicationContext();
         PackageManager pm = context.getPackageManager();
 
         // add all server module
-        Intent queryIntent = new Intent(
-                CommonConstants.HOTPOT_COMPONENT_APP_UPDATE_INTENT_FILTER);
+        Intent queryIntent = new Intent(intent_filter);
         List<ResolveInfo> list = pm.queryIntentActivities(queryIntent,
                 PackageManager.MATCH_DEFAULT_ONLY);
         long now = System.currentTimeMillis();

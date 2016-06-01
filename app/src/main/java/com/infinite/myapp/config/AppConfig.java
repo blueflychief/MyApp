@@ -18,11 +18,11 @@ public class AppConfig {
     public static final boolean APP_DEVELOPED = BuildConfig.DEVELOPED;
 
     //QQ登录平台ID
-    public static final String QQ_OPEN_PLATFORM_ID = "1104753333";
-    public static final String WX_APP_ID = "wx86ad26d7a2f37c7d";
-    public static final String MCH_ID = "1267310001";
-    public static final String WX_AUTH_STATE = "wechat_kk_auth";
-    public static final String WX_AUTH_SCOPE = "snsapi_userinfo";
+    public static final String QQ_OPEN_PLATFORM_ID = "00000000000000";
+    public static final String WX_APP_ID = "00000000000000";
+    public static final String MCH_ID = "00000000000000";
+    public static final String WX_AUTH_STATE = "00000000000000";
+    public static final String WX_AUTH_SCOPE = "00000000000000";
 
     /*
      * log tag

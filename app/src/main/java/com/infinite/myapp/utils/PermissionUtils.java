@@ -28,8 +28,8 @@ public class PermissionUtils {
      *
      * @return
      */
-    public static boolean hasRecordAudioPermission() {
-        return PackageManager.PERMISSION_GRANTED == getPackageManager().checkPermission("android.permission.RECORD_AUDIO", "com.kk.user");
+    public static boolean hasRecordAudioPermission(String pakagename) {
+        return PackageManager.PERMISSION_GRANTED == getPackageManager().checkPermission("android.permission.RECORD_AUDIO", pakagename);
     }
 
     /**
@@ -37,8 +37,8 @@ public class PermissionUtils {
      *
      * @return
      */
-    public static boolean hasCameraPermission() {
-        return PackageManager.PERMISSION_GRANTED == getPackageManager().checkPermission("android.permission.CAMERA", "com.kk.user");
+    public static boolean hasCameraPermission(String pkgname) {
+        return PackageManager.PERMISSION_GRANTED == getPackageManager().checkPermission("android.permission.CAMERA", pkgname);
     }
 
     private static PackageManager getPackageManager() {

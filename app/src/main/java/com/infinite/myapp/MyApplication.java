@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.infinite.myapp.config.AppConfig;
-import com.infinite.myapp.utils.network.Excalibur;
+import com.infinite.myapp.utils.networkutil.Excalibur;
 
 
 /**
@@ -39,7 +39,7 @@ public class MyApplication extends Application {
 
 //    private void initJPushConfig() {
 //        // 使用模拟器时注释掉这两句，否则崩溃。设置开启日志,发布时请关闭日志
-//        JPushInterface.setDebugMode(BuildConfig.KK_LOG);
+//        JPushInterface.setDebugMode(BuildConfig.MY_LOG);
 //        // 初始化 JPush
 //        JPushInterface.init(this);
 //    }

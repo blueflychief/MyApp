@@ -11,11 +11,11 @@ import com.infinite.myapp.view.MyDialogFragment;
 public class LoadingUtils {
     private final String TAG = LoadingUtils.class.getSimpleName();
 
-    private static MyDialogFragment mKKDialogFragment;
+    private static MyDialogFragment mDialogFragment;
 
     public static synchronized MyDialogFragment showLoadingDialog(FragmentActivity activity, String message) {
         showLoadingDialog(activity, message, false);
-        return mKKDialogFragment;
+        return mDialogFragment;
     }
 
     /**
@@ -26,16 +26,16 @@ public class LoadingUtils {
      */
     public static synchronized MyDialogFragment showLoadingDialog(FragmentActivity activity, String message, boolean cancelable) {
         if (!isShowing()) {
-            mKKDialogFragment = MyDialogFragment.createDialogFragment(message);
-//            mKKDialogFragment.show(activity.getSupportFragmentManager(), "Loading");
-            mKKDialogFragment.setCancelable(cancelable);
+            mDialogFragment = MyDialogFragment.createDialogFragment(message);
+//            mDialogFragment.show(activity.getSupportFragmentManager(), "Loading");
+            mDialogFragment.setCancelable(cancelable);
             FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-            ft.add(mKKDialogFragment, "Loading");
+            ft.add(mDialogFragment, "Loading");
             ft.commitAllowingStateLoss();
         } else {
-            mKKDialogFragment.setMessage(message);
+            mDialogFragment.setMessage(message);
         }
-        return mKKDialogFragment;
+        return mDialogFragment;
     }
 
     /**
@@ -43,8 +43,8 @@ public class LoadingUtils {
      */
     public static synchronized void closeLoadingDialog() {
         if (isShowing()) {
-            mKKDialogFragment.dismissAllowingStateLoss();
-            mKKDialogFragment = null;
+            mDialogFragment.dismissAllowingStateLoss();
+            mDialogFragment = null;
         }
     }
 
@@ -54,6 +54,6 @@ public class LoadingUtils {
      * @return
      */
     public static synchronized boolean isShowing() {
-        return mKKDialogFragment != null && mKKDialogFragment.getDialog() != null && mKKDialogFragment.getDialog().isShowing();
+        return mDialogFragment != null && mDialogFragment.getDialog() != null && mDialogFragment.getDialog().isShowing();
     }
 }
