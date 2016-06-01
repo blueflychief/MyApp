@@ -34,7 +34,7 @@ public class AppBar extends Toolbar {
 
     private String mTitle = null;
     private int mTitleSize = 20;
-    private int mTitleColor= Color.WHITE;
+    private int mTitleColor = Color.WHITE;
     private static final String TAG = "AppBar";
 
     private LayoutParams MENU_LP;
@@ -45,6 +45,7 @@ public class AppBar extends Toolbar {
     private View mCenterView = null;
 
     private static final List<View> MENUS = new ArrayList<>();
+    private TextView mToolbarTitle;
 
     public AppBar(Context context) {
         this(context, null);
@@ -66,7 +67,7 @@ public class AppBar extends Toolbar {
         final String navBtnGravity = a.getString(R.styleable.AppBar_navigationGravity);
         mTitle = a.getString(R.styleable.AppBar_center_title);
         mTitleSize = a.getDimensionPixelSize(R.styleable.AppBar_center_title_size, mTitleSize);
-        mTitleColor = a.getColor(R.styleable.AppBar_center_title_color,mTitleColor);
+        mTitleColor = a.getColor(R.styleable.AppBar_center_title_color, mTitleColor);
         final int[] styleableResIds = {
                 R.styleable.AppBar_menu_left,
                 R.styleable.AppBar_menu_right,
@@ -172,15 +173,20 @@ public class AppBar extends Toolbar {
 
     public void setToolbarTitle(String title) {
         mTitle = title;
-        TextView textView = new TextView(context);
-        textView.setTextColor(mTitleColor);
-        textView.setTextSize(mTitleSize);
-        textView.setText(title);
-        textView.setGravity(Gravity.CENTER);
-        TextPaint tp = textView.getPaint();
-        tp.setFakeBoldText(true);
-        LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, Gravity.CENTER);
-        addView(textView, layoutParams);
+        if (mToolbarTitle == null) {
+            mToolbarTitle = new TextView(context);
+            mToolbarTitle.setTextColor(mTitleColor);
+            mToolbarTitle.setTextSize(mTitleSize);
+            mToolbarTitle.setGravity(Gravity.CENTER);
+            mToolbarTitle.setMaxEms(12);
+            mToolbarTitle.setMaxLines(1);
+            mToolbarTitle.setEllipsize(TextUtils.TruncateAt.END);
+            TextPaint tp = mToolbarTitle.getPaint();
+            tp.setFakeBoldText(true);
+            LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, Gravity.CENTER);
+            addView(mToolbarTitle, layoutParams);
+        }
+        mToolbarTitle.setText(title);
     }
 
     public AppBar addMenu(View v) {

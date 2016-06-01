@@ -15,10 +15,12 @@ import com.infinite.myapp.fragment.TabFragment1;
 import com.infinite.myapp.fragment.TabFragment2;
 import com.infinite.myapp.fragment.TabFragment3;
 import com.infinite.myapp.fragment.TabFragment4;
+import com.infinite.myapp.utils.KKClickListener;
 import com.infinite.myapp.utils.MyLogger;
 import com.infinite.myapp.utils.ToastUtils;
 import com.infinite.myapp.view.LoadingLayout;
 import com.infinite.myapp.view.MyNavigationButton;
+import com.infinite.myapp.view.WebViewActivity;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -59,6 +61,16 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
 //        mAppBar.setVisibility(View.GONE);
 
         mAppBar.setOnMenuItemClickListener(this);
+
+
+        mAppBar.getNavButton().setOnClickListener(new KKClickListener() {
+            @Override
+            protected void onKKClick(View v) {
+                Intent intent=new Intent(MainActivity.this, WebViewActivity.class);
+                intent.putExtra("url","http://www.baidu.com");
+                startActivity(intent);
+            }
+        });
     }
 
     private void initTabIndicator() {
