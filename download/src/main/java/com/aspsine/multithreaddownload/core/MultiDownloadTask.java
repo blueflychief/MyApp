@@ -1,12 +1,9 @@
 package com.aspsine.multithreaddownload.core;
 
-/**
- * Created by Aspsine on 2015/7/20.
- */
-
 import com.aspsine.multithreaddownload.DownloadInfo;
 import com.aspsine.multithreaddownload.db.DataBaseManager;
 import com.aspsine.multithreaddownload.db.ThreadInfo;
+import com.aspsine.multithreaddownload.util.L;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,14 +13,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * download thread
+ * 多线程下载任务
  */
 public class MultiDownloadTask extends DownloadTaskImpl {
 
     private DataBaseManager mDBManager;
 
     public MultiDownloadTask(DownloadInfo downloadInfo, ThreadInfo threadInfo, DataBaseManager dbManager, OnDownloadListener listener) {
-
         super(downloadInfo, threadInfo, listener);
         this.mDBManager = dbManager;
     }
@@ -48,10 +44,12 @@ public class MultiDownloadTask extends DownloadTaskImpl {
 
     @Override
     protected Map<String, String> getHttpHeaders(ThreadInfo info) {
+        //根据上次的完成度，设置下载Range开始和结束的位置
         Map<String, String> headers = new HashMap<String, String>();
         long start = info.getStart() + info.getFinished();
         long end = info.getEnd();
         headers.put("Range", "bytes=" + start + "-" + end);
+        L.i("--------MultiDownloadTask:"+info.getTag()+"----start:"+start+"---end:"+end);
         return headers;
     }
 

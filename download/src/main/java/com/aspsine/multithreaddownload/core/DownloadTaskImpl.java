@@ -8,7 +8,7 @@ import com.aspsine.multithreaddownload.Constants.HTTP;
 import com.aspsine.multithreaddownload.DownloadException;
 import com.aspsine.multithreaddownload.DownloadInfo;
 import com.aspsine.multithreaddownload.architecture.DownloadStatus;
-import com.aspsine.multithreaddownload.architecture.DownloadTask;
+import com.aspsine.multithreaddownload.architecture.IDownloadTask;
 import com.aspsine.multithreaddownload.db.ThreadInfo;
 import com.aspsine.multithreaddownload.util.IOCloseUtils;
 
@@ -24,9 +24,9 @@ import java.net.URLConnection;
 import java.util.Map;
 
 /**
- * Created by Aspsine on 2015/7/27.
+ *下载任务实现类
  */
-public abstract class DownloadTaskImpl implements DownloadTask {
+public abstract class DownloadTaskImpl implements IDownloadTask {
 
     private String mTag;
 
@@ -86,14 +86,14 @@ public abstract class DownloadTaskImpl implements DownloadTask {
 
     @Override
     public void run() {
-        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-        insertIntoDB(mThreadInfo);
+        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);   //设置为后台任务
+        insertIntoDB(mThreadInfo);                                         //开始下载前写入数据库
         try {
             mStatus = DownloadStatus.STATUS_PROGRESS;
             executeDownload();
             synchronized (mOnDownloadListener) {
                 mStatus = DownloadStatus.STATUS_COMPLETED;
-                mOnDownloadListener.onDownloadCompleted();
+                mOnDownloadListener.onDownloadCompleted();              //线程已经下载完毕，此时DownloaderImpl的onDownloadCompleted()需要去检测一下其他线程是否下载完毕
             }
         } catch (DownloadException e) {
             handleDownloadException(e);
@@ -125,6 +125,8 @@ public abstract class DownloadTaskImpl implements DownloadTask {
         }
     }
 
+
+    //下载执行方法
     private void executeDownload() throws DownloadException {
         final URL url;
         try {
@@ -142,7 +144,7 @@ public abstract class DownloadTaskImpl implements DownloadTask {
             setHttpHeader(getHttpHeaders(mThreadInfo), httpConnection);
             final int responseCode = httpConnection.getResponseCode();
             if (responseCode == getResponseCode()) {
-                transferData(httpConnection);
+                getInputStreamData(httpConnection);
             } else {
                 throw new DownloadException(DownloadStatus.STATUS_FAILED, "UnSupported response code:" + responseCode);
             }
@@ -165,7 +167,9 @@ public abstract class DownloadTaskImpl implements DownloadTask {
         }
     }
 
-    private void transferData(HttpURLConnection httpConnection) throws DownloadException {
+
+    //文件下载核心方法，获取网络流
+    private void getInputStreamData(HttpURLConnection httpConnection) throws DownloadException {
         InputStream inputStream = null;
         RandomAccessFile raf = null;
         try {
@@ -180,7 +184,7 @@ public abstract class DownloadTaskImpl implements DownloadTask {
             } catch (IOException e) {
                 throw new DownloadException(DownloadStatus.STATUS_FAILED, "File error", e);
             }
-            transferData(inputStream, raf);
+            transferInputStreamData(inputStream, raf);
         } finally {
             try {
                 IOCloseUtils.close(inputStream);
@@ -191,10 +195,13 @@ public abstract class DownloadTaskImpl implements DownloadTask {
         }
     }
 
-    private void transferData(InputStream inputStream, RandomAccessFile raf) throws DownloadException {
-        final byte[] buffer = new byte[1024 * 16];
+    //转换网络输入流
+    private void transferInputStreamData(InputStream inputStream, RandomAccessFile raf) throws DownloadException {
+        final byte[] buffer = new byte[1024 * 32];   //缓冲区大小32k
+
+        //循环读取输入流
         while (true) {
-            checkPausedOrCanceled();
+            checkPausedOrCanceled();  //每循环一次，检查一下是否被取消下载了
             int len = -1;
             try {
                 len = inputStream.read(buffer);
@@ -211,7 +218,7 @@ public abstract class DownloadTaskImpl implements DownloadTask {
                 mThreadInfo.setFinished(mThreadInfo.getFinished() + len);
                 synchronized (mOnDownloadListener) {
                     mDownloadInfo.setFinished(mDownloadInfo.getFinished() + len);
-                    mOnDownloadListener.onDownloadProgress(mDownloadInfo.getFinished(), mDownloadInfo.getLength());
+                    mOnDownloadListener.onDownloadProgress(mThreadInfo.getId(),mThreadInfo.getFinished(),mDownloadInfo.getFinished(), mDownloadInfo.getLength());   //每循环一次，返回一次进度
                 }
             } catch (IOException e) {
                 throw new DownloadException(DownloadStatus.STATUS_FAILED, "Fail write buffer to file", e);

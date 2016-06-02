@@ -5,9 +5,9 @@ import com.aspsine.multithreaddownload.core.ConnectTaskImpl;
 import java.net.HttpURLConnection;
 
 /**
- * CallBack of download status
+ * 下载状态的回调
  */
-public interface CallBack {
+public interface IDownloadCallBack {
 
     void onStarted();
 
@@ -28,7 +28,7 @@ public interface CallBack {
      *                       {@code Accept-Ranges} is {@code bytes} the value of  isRangeSupport is
      *                       {@code true} else {@code false}
      */
-    void onConnected(long total, boolean isRangeSupport);
+    void onConnected(long connect_time, long total, boolean isRangeSupport);
 
     /**
      * <p> progress callback.
@@ -37,7 +37,7 @@ public interface CallBack {
      * @param total    the total length of the file same value with method {@link }
      * @param progress the percent of progress (finished/total)*100
      */
-    void onProgress(long finished, long total, int progress);
+    void onProgress(int thread_id, long thread_finished, long finished, long total, int progress);
 
     /**
      * <p> download complete

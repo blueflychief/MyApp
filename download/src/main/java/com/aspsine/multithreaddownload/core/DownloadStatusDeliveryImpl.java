@@ -2,7 +2,7 @@ package com.aspsine.multithreaddownload.core;
 
 import android.os.Handler;
 
-import com.aspsine.multithreaddownload.CallBack;
+import com.aspsine.multithreaddownload.IDownloadCallBack;
 import com.aspsine.multithreaddownload.DownloadException;
 import com.aspsine.multithreaddownload.architecture.DownloadStatus;
 import com.aspsine.multithreaddownload.architecture.DownloadStatusDelivery;
@@ -10,7 +10,7 @@ import com.aspsine.multithreaddownload.architecture.DownloadStatusDelivery;
 import java.util.concurrent.Executor;
 
 /**
- * Created by Aspsine on 2015/7/15.
+ * 下载状态回调
  */
 public class DownloadStatusDeliveryImpl implements DownloadStatusDelivery {
     private Executor mDownloadStatusPoster;
@@ -31,7 +31,7 @@ public class DownloadStatusDeliveryImpl implements DownloadStatusDelivery {
 
     private static class DownloadStatusDeliveryRunnable implements Runnable {
         private final DownloadStatus mDownloadStatus;
-        private final CallBack mCallBack;
+        private final IDownloadCallBack mCallBack;
 
         public DownloadStatusDeliveryRunnable(DownloadStatus downloadStatus) {
             this.mDownloadStatus = downloadStatus;
@@ -45,10 +45,10 @@ public class DownloadStatusDeliveryImpl implements DownloadStatusDelivery {
                     mCallBack.onConnecting();
                     break;
                 case DownloadStatus.STATUS_CONNECTED:
-                    mCallBack.onConnected(mDownloadStatus.getLength(), mDownloadStatus.isAcceptRanges());
+                    mCallBack.onConnected(mDownloadStatus.getTime(),mDownloadStatus.getLength(), mDownloadStatus.isAcceptRanges());
                     break;
                 case DownloadStatus.STATUS_PROGRESS:
-                    mCallBack.onProgress(mDownloadStatus.getFinished(), mDownloadStatus.getLength(), mDownloadStatus.getPercent());
+                    mCallBack.onProgress(mDownloadStatus.getThreadId(),mDownloadStatus.getThreadFinished(),mDownloadStatus.getAllFinished(), mDownloadStatus.getLength(), mDownloadStatus.getPercent());
                     break;
                 case DownloadStatus.STATUS_COMPLETED:
                     mCallBack.onCompleted();

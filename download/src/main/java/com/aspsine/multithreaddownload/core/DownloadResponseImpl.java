@@ -1,20 +1,20 @@
 package com.aspsine.multithreaddownload.core;
 
-import com.aspsine.multithreaddownload.CallBack;
+import com.aspsine.multithreaddownload.IDownloadCallBack;
 import com.aspsine.multithreaddownload.DownloadException;
-import com.aspsine.multithreaddownload.architecture.DownloadResponse;
+import com.aspsine.multithreaddownload.architecture.IDownloadResponse;
 import com.aspsine.multithreaddownload.architecture.DownloadStatus;
 import com.aspsine.multithreaddownload.architecture.DownloadStatusDelivery;
 
 /**
  * Created by Aspsine on 2015/10/29.
  */
-public class DownloadResponseImpl implements DownloadResponse {
+public class DownloadResponseImpl implements IDownloadResponse {
     private DownloadStatusDelivery mDelivery;
 
     private DownloadStatus mDownloadStatus;
 
-    public DownloadResponseImpl(DownloadStatusDelivery delivery, CallBack callBack) {
+    public DownloadResponseImpl(DownloadStatusDelivery delivery, IDownloadCallBack callBack) {
         mDelivery = delivery;
         mDownloadStatus = new DownloadStatus();
         mDownloadStatus.setCallBack(callBack);
@@ -54,10 +54,12 @@ public class DownloadResponseImpl implements DownloadResponse {
     }
 
     @Override
-    public void onDownloadProgress(long finished, long length, int percent) {
-        mDownloadStatus.setFinished(finished);
+    public void onDownloadProgress(int thread_id, long thread_finished, long finished, long length, int percent) {
+        mDownloadStatus.setAllFinished(finished);
         mDownloadStatus.setLength(length);
         mDownloadStatus.setPercent(percent);
+        mDownloadStatus.setThreadId(thread_id);
+        mDownloadStatus.setThreadFinished(thread_finished);
         mDownloadStatus.setStatus(DownloadStatus.STATUS_PROGRESS);
         mDelivery.post(mDownloadStatus);
     }

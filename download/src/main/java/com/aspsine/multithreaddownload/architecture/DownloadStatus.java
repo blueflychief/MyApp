@@ -1,10 +1,10 @@
 package com.aspsine.multithreaddownload.architecture;
 
-import com.aspsine.multithreaddownload.CallBack;
+import com.aspsine.multithreaddownload.IDownloadCallBack;
 import com.aspsine.multithreaddownload.DownloadException;
 
 /**
- * Created by Aspsine on 2015/7/15.
+ *线程下载状态
  */
 public class DownloadStatus {
     public static final int STATUS_STARTED = 101;
@@ -18,13 +18,15 @@ public class DownloadStatus {
 
     private int status;
     private long time;
+    private int thread_id;
+    private long thread_finished;
     private long length;
-    private long finished;
+    private long all_finished;
     private int percent;
     private boolean acceptRanges;
     private DownloadException exception;
 
-    private CallBack callBack;
+    private IDownloadCallBack callBack;
 
     public int getStatus() {
         return status;
@@ -36,6 +38,14 @@ public class DownloadStatus {
 
     public long getTime() {
         return time;
+    }
+
+    public int getThreadId() {
+        return thread_id;
+    }
+
+    public void setThreadId(int thread_id) {
+        this.thread_id = thread_id;
     }
 
     public void setTime(long time) {
@@ -50,12 +60,20 @@ public class DownloadStatus {
         this.length = length;
     }
 
-    public long getFinished() {
-        return finished;
+    public long getAllFinished() {
+        return all_finished;
     }
 
-    public void setFinished(long finished) {
-        this.finished = finished;
+    public void setAllFinished(long finished) {
+        this.all_finished = finished;
+    }
+
+    public long getThreadFinished() {
+        return thread_finished;
+    }
+
+    public void setThreadFinished(long finished) {
+        this.thread_finished = finished;
     }
 
     public int getPercent() {
@@ -82,11 +100,11 @@ public class DownloadStatus {
         this.exception = exception;
     }
 
-    public CallBack getCallBack() {
+    public IDownloadCallBack getCallBack() {
         return callBack;
     }
 
-    public void setCallBack(CallBack callBack) {
+    public void setCallBack(IDownloadCallBack callBack) {
         this.callBack = callBack;
     }
 }

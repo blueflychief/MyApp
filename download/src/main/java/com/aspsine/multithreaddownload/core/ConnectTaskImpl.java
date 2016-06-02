@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 import com.aspsine.multithreaddownload.Constants;
 import com.aspsine.multithreaddownload.DownloadException;
-import com.aspsine.multithreaddownload.architecture.ConnectTask;
+import com.aspsine.multithreaddownload.architecture.IConnectTask;
 import com.aspsine.multithreaddownload.architecture.DownloadStatus;
 
 import java.io.IOException;
@@ -15,17 +15,17 @@ import java.net.ProtocolException;
 import java.net.URL;
 
 /**
- * Created by Aspsine on 2015/7/20.
+ * 下载前从服务器获取文件信息的类
  */
-public class ConnectTaskImpl implements ConnectTask {
+public class ConnectTaskImpl implements IConnectTask {
     private final String mUri;
-    private final OnConnectListener mOnConnectListener;
+    private final IConnectListener mOnConnectListener;
 
     private volatile int mStatus;
 
     private volatile long mStartTime;
 
-    public ConnectTaskImpl(String uri, OnConnectListener listener) {
+    public ConnectTaskImpl(String uri, IConnectListener listener) {
         this.mUri = uri;
         this.mOnConnectListener = listener;
     }
@@ -66,6 +66,8 @@ public class ConnectTaskImpl implements ConnectTask {
         }
     }
 
+
+    //执行服务器连接，获取文件的大小
     private void executeConnection() throws DownloadException {
         mStartTime = System.currentTimeMillis();
         HttpURLConnection httpConnection = null;
@@ -84,7 +86,7 @@ public class ConnectTaskImpl implements ConnectTask {
             final int responseCode = httpConnection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 parseResponse(httpConnection, false);
-            } else if (responseCode == HttpURLConnection.HTTP_PARTIAL) {
+            } else if (responseCode == HttpURLConnection.HTTP_PARTIAL) {   //响应码  206    可分块下载
                 parseResponse(httpConnection, true);
             } else {
                 throw new DownloadException(DownloadStatus.STATUS_FAILED, "UnSupported response code:" + responseCode);
@@ -100,8 +102,9 @@ public class ConnectTaskImpl implements ConnectTask {
         }
     }
 
-    private void parseResponse(HttpURLConnection httpConnection, boolean isAcceptRanges) throws DownloadException {
 
+    //解析响应头，获取文件的大小
+    private void parseResponse(HttpURLConnection httpConnection, boolean isAcceptRanges) throws DownloadException {
         final long length;
         String contentLength = httpConnection.getHeaderField("Content-Length");
         if (TextUtils.isEmpty(contentLength) || contentLength.equals("0") || contentLength.equals("-1")) {
@@ -116,10 +119,10 @@ public class ConnectTaskImpl implements ConnectTask {
 
         checkCanceled();
 
-        //Successful
+        //连接服务器成功
         mStatus = DownloadStatus.STATUS_CONNECTED;
         final long timeDelta = System.currentTimeMillis() - mStartTime;
-        mOnConnectListener.onConnected(timeDelta, length, isAcceptRanges);
+        mOnConnectListener.onConnected(timeDelta, length, isAcceptRanges);   //回调DownloaderImpl中的onConnected（）方法准备开启线程去下载文件
     }
 
     private void checkCanceled() throws DownloadException {

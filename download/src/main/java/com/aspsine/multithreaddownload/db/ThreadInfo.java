@@ -1,7 +1,7 @@
 package com.aspsine.multithreaddownload.db;
 
 /**
- * Created by aspsine on 15-4-19.
+ * 线程信息类
  */
 public class ThreadInfo {
     private int id;

@@ -5,12 +5,12 @@ import com.aspsine.multithreaddownload.DownloadException;
 /**
  * Created by Aspsine on 2015/7/22.
  */
-public interface DownloadTask extends Runnable {
+public interface IDownloadTask extends Runnable {
 
     interface OnDownloadListener {
         void onDownloadConnecting();
 
-        void onDownloadProgress(long finished, long length);
+        void onDownloadProgress(int thread_id,long thread_finished,long all_finished, long length);
 
         void onDownloadCompleted();
 

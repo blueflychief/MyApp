@@ -4,10 +4,11 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
-import com.aspsine.multithreaddownload.architecture.DownloadResponse;
+import com.aspsine.multithreaddownload.architecture.IDownloadResponse;
 import com.aspsine.multithreaddownload.architecture.DownloadStatusDelivery;
-import com.aspsine.multithreaddownload.architecture.Downloader;
+import com.aspsine.multithreaddownload.architecture.IDownloader;
 import com.aspsine.multithreaddownload.core.DownloadResponseImpl;
 import com.aspsine.multithreaddownload.core.DownloadStatusDeliveryImpl;
 import com.aspsine.multithreaddownload.core.DownloaderImpl;
@@ -24,22 +25,18 @@ import java.util.concurrent.Executors;
 /**
  * Created by Aspsine on 2015/7/14.
  */
-public class DownloadManager implements Downloader.OnDownloaderDestroyedListener {
-
+public class DownloadManager implements IDownloader.IDownloaderDestroyedListener {
     public static final String TAG = DownloadManager.class.getSimpleName();
 
-    /**
-     * singleton of DownloadManager
-     */
     private static DownloadManager sDownloadManager;
 
     private DataBaseManager mDBManager;
 
 
     //正在下载的队列
-    private Map<String, Downloader> mDownloaderMap;
+    private Map<String, IDownloader> mDownloaderMap;
 
-    private DownloadConfiguration mConfig;
+    private DownloadConfiguration mDownloadConfig;
 
     private ExecutorService mExecutorService;
 
@@ -54,11 +51,9 @@ public class DownloadManager implements Downloader.OnDownloaderDestroyedListener
         return sDownloadManager;
     }
 
-    /**
-     * private construction
-     */
+
     private DownloadManager() {
-        mDownloaderMap = new LinkedHashMap<String, Downloader>();
+        mDownloaderMap = new LinkedHashMap<String, IDownloader>();
     }
 
     public void init(Context context) {
@@ -69,26 +64,30 @@ public class DownloadManager implements Downloader.OnDownloaderDestroyedListener
         if (config.getThreadNum() > config.getMaxThreadNum()) {
             throw new IllegalArgumentException("thread num must < max thread num");
         }
-        mConfig = config;
+        mDownloadConfig = config;
         mDBManager = DataBaseManager.getInstance(context);
-        mExecutorService = Executors.newFixedThreadPool(mConfig.getMaxThreadNum());
+        mExecutorService = Executors.newFixedThreadPool(mDownloadConfig.getMaxThreadNum());
         mDelivery = new DownloadStatusDeliveryImpl(new Handler(Looper.getMainLooper()));
     }
 
     @Override
-    public void onDestroyed(String key, Downloader downloader) {
+    public void onDestroyed(String key, IDownloader downloader) {
         if (mDownloaderMap.containsKey(key)) {
             mDownloaderMap.remove(key);
         }
     }
 
-    public void download(DownloadRequest request, String tag, CallBack callBack) {
-        final String key = createKey(tag);
+    public void download(DownloadRequestInfo request, IDownloadCallBack callBack) {
+        if (TextUtils.isEmpty(request.getUri())) {
+            throw new NullPointerException("-------下载uri不能为空！！！！！");
+        }
+        //将下载url进行hash计算出唯一tag
+        final String mUrlKey = createKey(request.getUri());
         //如果未在下载
-        if (!isRuning(key)) {
-            DownloadResponse response = new DownloadResponseImpl(mDelivery, callBack);
-            Downloader downloader = new DownloaderImpl(request, response, mExecutorService, mDBManager, key, mConfig, this);
-            mDownloaderMap.put(key, downloader);
+        if (!isRuning(mUrlKey)) {
+            IDownloadResponse response = new DownloadResponseImpl(mDelivery, callBack);
+            IDownloader downloader = new DownloaderImpl(request, response, mExecutorService, mDBManager, mUrlKey, mDownloadConfig, this);
+            mDownloaderMap.put(mUrlKey, downloader);
             downloader.start();
         }
     }
@@ -96,7 +95,7 @@ public class DownloadManager implements Downloader.OnDownloaderDestroyedListener
     public void pause(String tag) {
         String key = createKey(tag);
         if (mDownloaderMap.containsKey(key)) {
-            Downloader downloader = mDownloaderMap.get(key);
+            IDownloader downloader = mDownloaderMap.get(key);
             if (downloader != null) {
                 if (downloader.isRunning()) {
                     downloader.pause();
@@ -109,7 +108,7 @@ public class DownloadManager implements Downloader.OnDownloaderDestroyedListener
     public void cancel(String tag) {
         String key = createKey(tag);
         if (mDownloaderMap.containsKey(key)) {
-            Downloader downloader = mDownloaderMap.get(key);
+            IDownloader downloader = mDownloaderMap.get(key);
             if (downloader != null) {
                 downloader.cancel();
             }
@@ -118,7 +117,7 @@ public class DownloadManager implements Downloader.OnDownloaderDestroyedListener
     }
 
     public void pauseAll() {
-        for (Downloader downloader : mDownloaderMap.values()) {
+        for (IDownloader downloader : mDownloaderMap.values()) {
             if (downloader != null) {
                 if (downloader.isRunning()) {
                     downloader.pause();
@@ -128,7 +127,7 @@ public class DownloadManager implements Downloader.OnDownloaderDestroyedListener
     }
 
     public void cancelAll() {
-        for (Downloader downloader : mDownloaderMap.values()) {
+        for (IDownloader downloader : mDownloaderMap.values()) {
             if (downloader != null) {
                 if (downloader.isRunning()) {
                     downloader.cancel();
@@ -140,7 +139,7 @@ public class DownloadManager implements Downloader.OnDownloaderDestroyedListener
 //    public void delete(String tag) {
 //        String key = createKey(tag);
 //        if (mDownloaderMap.containsKey(key)) {
-//            Downloader downloader = mDownloaderMap.get(key);
+//            IDownloader downloader = mDownloaderMap.get(key);
 //            downloader.cancel();
 //        } else {
 //            List<DownloadInfo> infoList = mDBManager.getDownloadInfos(tag);
@@ -178,7 +177,7 @@ public class DownloadManager implements Downloader.OnDownloaderDestroyedListener
     //检查是否正在下载
     private boolean isRuning(String key) {
         if (mDownloaderMap.containsKey(key)) {
-            Downloader downloader = mDownloaderMap.get(key);
+            IDownloader downloader = mDownloaderMap.get(key);
             if (downloader != null) {
                 if (downloader.isRunning()) {
                     L.w("Task has been started!");

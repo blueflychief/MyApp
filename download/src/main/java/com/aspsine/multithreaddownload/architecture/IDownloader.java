@@ -3,10 +3,10 @@ package com.aspsine.multithreaddownload.architecture;
 /**
  * Created by Aspsine on 2015/10/29.
  */
-public interface Downloader {
+public interface IDownloader {
 
-    public interface OnDownloaderDestroyedListener {
-        void onDestroyed(String key, Downloader downloader);
+    public interface IDownloaderDestroyedListener {
+        void onDestroyed(String key, IDownloader downloader);
     }
 
     boolean isRunning();

@@ -4,10 +4,10 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 
-import com.aspsine.multithreaddownload.CallBack;
+import com.aspsine.multithreaddownload.IDownloadCallBack;
 import com.aspsine.multithreaddownload.DownloadException;
 import com.aspsine.multithreaddownload.DownloadManager;
-import com.aspsine.multithreaddownload.DownloadRequest;
+import com.aspsine.multithreaddownload.DownloadRequestInfo;
 import com.infinite.myapp.R;
 import com.infinite.myapp.base.BaseActivity;
 import com.infinite.myapp.utils.MyClickListener;
@@ -53,20 +53,21 @@ public class TestActivity extends BaseActivity {
 
 //                    url = "http://sw.bos.baidu.com/sw-search-sp/software/50a1366f748/jre_8u91_windows_i586_8.0.910.15.exe";
                     url = "http://sw.bos.baidu.com/sw-search-sp/software/7811f6cde4b/QQ_8.3.18038.0_setup.exe";
-                    final DownloadRequest request = new DownloadRequest.Builder()
-                            .setTitle("jre_8u91_windows_i586_8.0.910.15.exe")
+                    final DownloadRequestInfo requestInfo = new DownloadRequestInfo.Builder()
+                            .setFileName("jre_8u91_windows_i586_8.0.910.15.exe")
                             .setUri(url)
-                            .setFolder(new File(download_path))
+                            .setSavePath(new File(download_path))
                             .build();
 
-                    DownloadManager.getInstance().download(request, url, new DownloadCallback());
+                    DownloadManager.getInstance().download(requestInfo, new DownloadCallbackImpl());
                     break;
             }
         }
     };
 
 
-    private class DownloadCallback implements CallBack {
+    //下载回调实现类
+    private class DownloadCallbackImpl implements IDownloadCallBack {
 
 
         @Override
@@ -80,13 +81,13 @@ public class TestActivity extends BaseActivity {
         }
 
         @Override
-        public void onConnected(long total, boolean isRangeSupport) {
-            MyLogger.i("------onConnected:"+"total:"+total+"---isRangeSupport:"+isRangeSupport);
+        public void onConnected(long connect_time, long total, boolean isRangeSupport) {
+            MyLogger.i("------onConnected:" + "---connect_time:" + connect_time + "--total:" + total + "---isRangeSupport:" + isRangeSupport);
         }
 
         @Override
-        public void onProgress(long finished, long total, int progress) {
-            MyLogger.i("------onProgress:"+"finished:"+finished+"---total:"+total+"----progress:"+progress);
+        public void onProgress(int thread_id, long thread_finished, long finished, long total, int progress) {
+            MyLogger.i("------onProgress:" + "---thread_id:" + thread_id + "---thread_finished:" + thread_finished + "---finished:" + finished + "---total:" + total + "----progress:" + progress);
         }
 
         @Override

@@ -3,12 +3,12 @@ package com.aspsine.multithreaddownload.core;
 import com.aspsine.multithreaddownload.DownloadConfiguration;
 import com.aspsine.multithreaddownload.DownloadException;
 import com.aspsine.multithreaddownload.DownloadInfo;
-import com.aspsine.multithreaddownload.DownloadRequest;
-import com.aspsine.multithreaddownload.architecture.ConnectTask;
-import com.aspsine.multithreaddownload.architecture.DownloadResponse;
+import com.aspsine.multithreaddownload.DownloadRequestInfo;
+import com.aspsine.multithreaddownload.architecture.IConnectTask;
+import com.aspsine.multithreaddownload.architecture.IDownloadResponse;
 import com.aspsine.multithreaddownload.architecture.DownloadStatus;
-import com.aspsine.multithreaddownload.architecture.DownloadTask;
-import com.aspsine.multithreaddownload.architecture.Downloader;
+import com.aspsine.multithreaddownload.architecture.IDownloadTask;
+import com.aspsine.multithreaddownload.architecture.IDownloader;
 import com.aspsine.multithreaddownload.db.DataBaseManager;
 import com.aspsine.multithreaddownload.db.ThreadInfo;
 
@@ -17,13 +17,14 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 /**
+ * 下载实现类
  * Created by Aspsine on 2015/10/28.
  */
-public class DownloaderImpl implements Downloader, ConnectTask.OnConnectListener, DownloadTask.OnDownloadListener {
+public class DownloaderImpl implements IDownloader, IConnectTask.IConnectListener, IDownloadTask.OnDownloadListener {
 
-    private DownloadRequest mRequest;
+    private DownloadRequestInfo mRequest;
 
-    private DownloadResponse mResponse;
+    private IDownloadResponse mResponse;
 
     private Executor mExecutor;
 
@@ -33,23 +34,23 @@ public class DownloaderImpl implements Downloader, ConnectTask.OnConnectListener
 
     private DownloadConfiguration mConfig;
 
-    private OnDownloaderDestroyedListener mListener;
+    private IDownloaderDestroyedListener mListener;
 
     private int mStatus;
 
     private DownloadInfo mDownloadInfo;
 
-    private ConnectTask mConnectTask;
+    private IConnectTask mConnectTask;
 
-    private List<DownloadTask> mDownloadTasks;
+    private List<IDownloadTask> mDownloadTasks;
 
-    public DownloaderImpl(DownloadRequest request,
-                          DownloadResponse response,
+    public DownloaderImpl(DownloadRequestInfo request,
+                          IDownloadResponse response,
                           Executor executor,
                           DataBaseManager dbManager,
                           String key,
                           DownloadConfiguration config,
-                          OnDownloaderDestroyedListener listener) {
+                          IDownloaderDestroyedListener listener) {
         mRequest = request;
         mResponse = response;
         mExecutor = executor;
@@ -57,12 +58,14 @@ public class DownloaderImpl implements Downloader, ConnectTask.OnConnectListener
         mTag = key;
         mConfig = config;
         mListener = listener;
-
-        init();
+        initDownloadInfo();
     }
 
-    private void init() {
-        mDownloadInfo = new DownloadInfo(mRequest.getTitle().toString(), mRequest.getUri(), mRequest.getFolder());
+    /**
+     * 初始化下载信息
+     */
+    private void initDownloadInfo() {
+        mDownloadInfo = new DownloadInfo(mRequest.getFileName().toString(), mRequest.getUri(), mRequest.getSaveDir());
         mDownloadTasks = new LinkedList<>();
     }
 
@@ -86,7 +89,7 @@ public class DownloaderImpl implements Downloader, ConnectTask.OnConnectListener
         if (mConnectTask != null) {
             mConnectTask.cancel();
         }
-        for (DownloadTask task : mDownloadTasks) {
+        for (IDownloadTask task : mDownloadTasks) {
             task.pause();
         }
     }
@@ -96,7 +99,7 @@ public class DownloaderImpl implements Downloader, ConnectTask.OnConnectListener
         if (mConnectTask != null) {
             mConnectTask.cancel();
         }
-        for (DownloadTask task : mDownloadTasks) {
+        for (IDownloadTask task : mDownloadTasks) {
             task.cancel();
         }
     }
@@ -117,10 +120,10 @@ public class DownloaderImpl implements Downloader, ConnectTask.OnConnectListener
     public void onConnected(long time, long length, boolean isAcceptRanges) {
         mStatus = DownloadStatus.STATUS_CONNECTED;
         mResponse.onConnected(time, length, isAcceptRanges);
-
         mDownloadInfo.setAcceptRanges(isAcceptRanges);
         mDownloadInfo.setLength(length);
-        download(length, isAcceptRanges);
+        //真正的开始下载文件
+        prepareDownload(length, isAcceptRanges);
     }
 
     @Override
@@ -142,11 +145,11 @@ public class DownloaderImpl implements Downloader, ConnectTask.OnConnectListener
     }
 
     @Override
-    public void onDownloadProgress(long finished, long length) {
+    public void onDownloadProgress(int thread_id,long thread_finished,long all_finished, long length) {
         mStatus = DownloadStatus.STATUS_PROGRESS;
         // calculate percent
-        final int percent = (int) (finished * 100 / length);
-        mResponse.onDownloadProgress(finished, length, percent);
+        final int percent = (int) (all_finished * 100 / length);
+        mResponse.onDownloadProgress(thread_id,thread_finished,all_finished, length, percent);
     }
 
     @Override
@@ -187,15 +190,18 @@ public class DownloaderImpl implements Downloader, ConnectTask.OnConnectListener
         }
     }
 
+    //第一步，开启子线程去连接服务器，获取文件的长度及是否支持分块下载
     private void connect() {
         mConnectTask = new ConnectTaskImpl(mRequest.getUri(), this);
         mExecutor.execute(mConnectTask);
     }
 
-    private void download(long length, boolean acceptRanges) {
+
+    //第二步，准备去下载文件
+    private void prepareDownload(long length, boolean acceptRanges) {
         initDownloadTasks(length, acceptRanges);
         // start tasks
-        for (DownloadTask downloadTask : mDownloadTasks) {
+        for (IDownloadTask downloadTask : mDownloadTasks) {
             mExecutor.execute(downloadTask);
         }
     }
@@ -205,13 +211,16 @@ public class DownloaderImpl implements Downloader, ConnectTask.OnConnectListener
         mDownloadTasks.clear();
         if (acceptRanges) {
             List<ThreadInfo> threadInfos = getMultiThreadInfos(length);
-            // init finished
             int finished = 0;
+
+            //计算所有线程的累加完成度，以便界面显示进度
             for (ThreadInfo threadInfo : threadInfos) {
                 finished += threadInfo.getFinished();
             }
             mDownloadInfo.setFinished(finished);
+
             for (ThreadInfo info : threadInfos) {
+                //MultiDownloadTask创建之后或执行其抽象类DownloadTaskImpl的run()方法，run()开始执行下载
                 mDownloadTasks.add(new MultiDownloadTask(mDownloadInfo, info, mDBManager, this));
             }
         } else {
@@ -220,15 +229,17 @@ public class DownloaderImpl implements Downloader, ConnectTask.OnConnectListener
         }
     }
 
-    //TODO
+    //获取多线程下载的分片信息
     private List<ThreadInfo> getMultiThreadInfos(long length) {
-        // init threadInfo from db
+        //首先从数据库查询线程的信息
         final List<ThreadInfo> threadInfos = mDBManager.getThreadInfos(mTag);
+
+        //如果没有下载过，则将线程信息写入数据库
         if (threadInfos.isEmpty()) {
             final int threadNum = mConfig.getThreadNum();
+            final long average = length / threadNum;  //每个线程下载的大小
             for (int i = 0; i < threadNum; i++) {
                 // calculate average
-                final long average = length / threadNum;
                 final long start = average * i;
                 final long end;
                 if (i == threadNum - 1) {
@@ -249,9 +260,11 @@ public class DownloaderImpl implements Downloader, ConnectTask.OnConnectListener
         return threadInfo;
     }
 
+
+    //遍历所有的线程信息，所有的都完成了则下载任务完成
     private boolean isAllComplete() {
         boolean allFinished = true;
-        for (DownloadTask task : mDownloadTasks) {
+        for (IDownloadTask task : mDownloadTasks) {
             if (!task.isComplete()) {
                 allFinished = false;
                 break;
@@ -262,7 +275,7 @@ public class DownloaderImpl implements Downloader, ConnectTask.OnConnectListener
 
     private boolean isAllFailed() {
         boolean allFailed = true;
-        for (DownloadTask task : mDownloadTasks) {
+        for (IDownloadTask task : mDownloadTasks) {
             if (task.isDownloading()) {
                 allFailed = false;
                 break;
@@ -273,7 +286,7 @@ public class DownloaderImpl implements Downloader, ConnectTask.OnConnectListener
 
     private boolean isAllPaused() {
         boolean allPaused = true;
-        for (DownloadTask task : mDownloadTasks) {
+        for (IDownloadTask task : mDownloadTasks) {
             if (task.isDownloading()) {
                 allPaused = false;
                 break;
@@ -284,7 +297,7 @@ public class DownloaderImpl implements Downloader, ConnectTask.OnConnectListener
 
     private boolean isAllCanceled() {
         boolean allCanceled = true;
-        for (DownloadTask task : mDownloadTasks) {
+        for (IDownloadTask task : mDownloadTasks) {
             if (task.isDownloading()) {
                 allCanceled = false;
                 break;

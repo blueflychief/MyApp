@@ -3,9 +3,9 @@ package com.aspsine.multithreaddownload.architecture;
 import com.aspsine.multithreaddownload.DownloadException;
 
 /**
- * Created by Aspsine on 2015/10/28.
+ * 下载响应类
  */
-public interface DownloadResponse {
+public interface IDownloadResponse {
 
     void onStarted();
 
@@ -17,7 +17,7 @@ public interface DownloadResponse {
 
     void onConnectCanceled();
 
-    void onDownloadProgress(long finished, long length, int percent);
+    void onDownloadProgress(int thread_id, long thread_finished, long finished, long length, int percent);
 
     void onDownloadCompleted();
 

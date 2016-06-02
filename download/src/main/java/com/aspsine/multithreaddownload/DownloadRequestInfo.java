@@ -4,26 +4,26 @@ package com.aspsine.multithreaddownload;
 import java.io.File;
 
 /**
- * Created by Aspsine on 2015/4/20.
+ * 下载请求信息类
  */
-public class DownloadRequest {
+public class DownloadRequestInfo {
     private String mUri;
 
-    private File mFolder;
+    private File mSaveDir;
 
-    private CharSequence mTitle;
+    private CharSequence mFileName;
 
     private CharSequence mDescription;
 
     private boolean mScannable;
 
-    private DownloadRequest() {
+    private DownloadRequestInfo() {
     }
 
-    private DownloadRequest(String uri, File folder, CharSequence title, CharSequence description, boolean scannable) {
+    private DownloadRequestInfo(String uri, File folder, CharSequence title, CharSequence description, boolean scannable) {
         this.mUri = uri;
-        this.mFolder = folder;
-        this.mTitle = title;
+        this.mSaveDir = folder;
+        this.mFileName = title;
         this.mDescription = description;
         this.mScannable = scannable;
     }
@@ -32,12 +32,12 @@ public class DownloadRequest {
         return mUri;
     }
 
-    public File getFolder() {
-        return mFolder;
+    public File getSaveDir() {
+        return mSaveDir;
     }
 
-    public CharSequence getTitle() {
-        return mTitle;
+    public CharSequence getFileName() {
+        return mFileName;
     }
 
     public CharSequence getDescription() {
@@ -50,11 +50,14 @@ public class DownloadRequest {
 
     public static class Builder {
 
+        //下载地址
         private String mUri;
 
-        private File mFolder;
+        //下载保存目录
+        private File mSaveDir;
 
-        private CharSequence mTitle;
+        //保存文件名
+        private CharSequence mFileName;
 
         private CharSequence mDescription;
 
@@ -68,13 +71,13 @@ public class DownloadRequest {
             return this;
         }
 
-        public Builder setFolder(File folder) {
-            this.mFolder = folder;
+        public Builder setSavePath(File folder) {
+            this.mSaveDir = folder;
             return this;
         }
 
-        public Builder setTitle(CharSequence title) {
-            this.mTitle = title;
+        public Builder setFileName(CharSequence title) {
+            this.mFileName = title;
             return this;
         }
 
@@ -88,8 +91,8 @@ public class DownloadRequest {
             return this;
         }
 
-        public DownloadRequest build() {
-            DownloadRequest request = new DownloadRequest(mUri, mFolder, mTitle, mDescription, mScannable);
+        public DownloadRequestInfo build() {
+            DownloadRequestInfo request = new DownloadRequestInfo(mUri, mSaveDir, mFileName, mDescription, mScannable);
             return request;
         }
     }
