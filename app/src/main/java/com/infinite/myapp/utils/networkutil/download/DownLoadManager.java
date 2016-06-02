@@ -73,6 +73,8 @@ public class DownLoadManager {
         public void run() {
             try {
                 Response response = mResponseCall.execute();
+                MyLogger.i("------response:"+response.toString());
+                MyLogger.i("------response_headers:"+response.headers().toString());
                 if (response.isSuccessful()) {
                     if (mGetFileSizeListener != null) {
                         mGetFileSizeListener.success(response.message(),Long.parseLong(response.headers().get("Content-Range").split("/")[1]));

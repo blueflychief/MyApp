@@ -42,4 +42,5 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.0'
     compile 'com.alibaba:fastjson:1.2.12'
     compile 'com.android.support:design:23.3.0'
+    compile project(':download')
 }

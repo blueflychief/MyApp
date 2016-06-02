@@ -1,28 +1,26 @@
 package com.infinite.myapp.activity;
 
 import android.os.Environment;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
+import com.aspsine.multithreaddownload.CallBack;
+import com.aspsine.multithreaddownload.DownloadException;
+import com.aspsine.multithreaddownload.DownloadManager;
+import com.aspsine.multithreaddownload.DownloadRequest;
 import com.infinite.myapp.R;
 import com.infinite.myapp.base.BaseActivity;
 import com.infinite.myapp.utils.MyClickListener;
 import com.infinite.myapp.utils.MyLogger;
-import com.infinite.myapp.utils.databaseutil.DownLoadModel;
-import com.infinite.myapp.utils.networkutil.download.DownLoadService;
-import com.infinite.myapp.utils.networkutil.download.IDownLoad;
-import com.infinite.myapp.utils.networkutil.download.IDownLoadCallback;
 import com.infinite.myapp.view.LoadingLayout;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class TestActivity extends BaseActivity {
 
     private Button tv_test_download;
+    private String url;
 
     @Override
     public int getLayoutId() {
@@ -44,63 +42,129 @@ public class TestActivity extends BaseActivity {
         protected void onNotFastClick(View v) {
             switch (v.getId()) {
                 case R.id.tv_test_download:
-                    IDownLoad iDownLoad = DownLoadService.getService();
-                    List<String> list = new ArrayList<>();
+//                    IDownLoad iDownLoad = DownLoadService.getService();
+//                    List<String> list = new ArrayList<>();
 //                    list.add("http://sw.bos.baidu.com/sw-search-sp/software/50a1366f748/jre_8u91_windows_i586_8.0.910.15.exe");
 //                    list.add("http://sw.bos.baidu.com/sw-search-sp/software/7811f6cde4b/QQ_8.3.18038.0_setup.exe");
                     String download_path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "myapp" + File.separator;
-                    ArrayList<DownLoadModel> tempList = buildDownloadList(list,download_path);
-                    iDownLoad.onDownLoadList(download_path,tempList, mDownloadVideoCallback);
+//                    ArrayList<DownLoadModel> tempList = buildDownloadList(list,download_path);
+//                    iDownLoad.onDownLoadList(download_path,tempList, mDownloadVideoCallback);
+
+
+//                    url = "http://sw.bos.baidu.com/sw-search-sp/software/50a1366f748/jre_8u91_windows_i586_8.0.910.15.exe";
+                    url = "http://sw.bos.baidu.com/sw-search-sp/software/7811f6cde4b/QQ_8.3.18038.0_setup.exe";
+                    final DownloadRequest request = new DownloadRequest.Builder()
+                            .setTitle("jre_8u91_windows_i586_8.0.910.15.exe")
+                            .setUri(url)
+                            .setFolder(new File(download_path))
+                            .build();
+
+                    DownloadManager.getInstance().download(request, url, new DownloadCallback());
                     break;
             }
         }
     };
 
 
-    private ArrayList<DownLoadModel> buildDownloadList(List<String> urls,String path) {
-        if (TextUtils.isEmpty(path)) {
-            MyLogger.e("------下载路径为空！！！");
-            return null;
+    private class DownloadCallback implements CallBack {
+
+
+        @Override
+        public void onStarted() {
+            MyLogger.i("------onStarted");
         }
 
-        ArrayList<DownLoadModel> list = new ArrayList<>(urls.size());
-        for (String url : urls) {
-            int index = url.lastIndexOf("/");
-            String filename = url.substring(index + 1);
-//                File file = new File(download_path + filename);
-            DownLoadModel entity = new DownLoadModel();
-            entity.url = url;
-            entity.saveName = path + filename;
-            list.add(entity);
+        @Override
+        public void onConnecting() {
+            MyLogger.i("------onConnecting");
         }
-        return list;
+
+        @Override
+        public void onConnected(long total, boolean isRangeSupport) {
+            MyLogger.i("------onConnected:"+"total:"+total+"---isRangeSupport:"+isRangeSupport);
+        }
+
+        @Override
+        public void onProgress(long finished, long total, int progress) {
+            MyLogger.i("------onProgress:"+"finished:"+finished+"---total:"+total+"----progress:"+progress);
+        }
+
+        @Override
+        public void onCompleted() {
+            MyLogger.i("------onCompleted");
+        }
+
+        @Override
+        public void onDownloadPaused() {
+            MyLogger.i("------onDownloadPaused");
+        }
+
+        @Override
+        public void onDownloadCanceled() {
+            MyLogger.i("------onDownloadCanceled");
+        }
+
+        @Override
+        public void onFailed(DownloadException e) {
+            MyLogger.i("------onFailed");
+        }
     }
 
-    private IDownLoadCallback mDownloadVideoCallback = new IDownLoadCallback() {
 
-        @Override
-        public void onStartDownload() {
-            MyLogger.i("------onStartDownload");
-        }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        pause(url);
+    }
 
-        @Override
-        public void onStartDefaultSize(int size) {
-            MyLogger.i("------onStartDefaultSize:"+size);
-        }
+    private void pause(String tag) {
+        DownloadManager.getInstance().pause(tag);
+    }
 
-        @Override
-        public void onDownLoadSuccess() {
-            MyLogger.i("------onDownLoadSuccess:");
-        }
-
-        @Override
-        public void onDownloadFailed() {
-            MyLogger.i("------onDownloadFailed:");
-        }
-
-        @Override
-        public void onDownloadSize(int size) {
-            MyLogger.i("--------onDownloadSizesize:"+size);
-        }
-    };
+//    private ArrayList<DownLoadModel> buildDownloadList(List<String> urls,String path) {
+//        if (TextUtils.isEmpty(path)) {
+//            MyLogger.e("------下载路径为空！！！");
+//            return null;
+//        }
+//
+//        ArrayList<DownLoadModel> list = new ArrayList<>(urls.size());
+//        for (String url : urls) {
+//            int index = url.lastIndexOf("/");
+//            String filename = url.substring(index + 1);
+////                File file = new File(download_path + filename);
+//            DownLoadModel entity = new DownLoadModel();
+//            entity.url = url;
+//            entity.saveName = path + filename;
+//            list.add(entity);
+//        }
+//        return list;
+//    }
+//
+//    private IDownLoadCallback mDownloadVideoCallback = new IDownLoadCallback() {
+//
+//        @Override
+//        public void onStartDownload() {
+//            MyLogger.i("------onStartDownload");
+//        }
+//
+//        @Override
+//        public void onStartDefaultSize(int size) {
+//            MyLogger.i("------onStartDefaultSize:"+size);
+//        }
+//
+//        @Override
+//        public void onDownLoadSuccess() {
+//            MyLogger.i("------onDownLoadSuccess:");
+//        }
+//
+//        @Override
+//        public void onDownloadFailed() {
+//            MyLogger.i("------onDownloadFailed:");
+//        }
+//
+//        @Override
+//        public void onDownloadSize(int size) {
+//            MyLogger.i("--------onDownloadSizesize:"+size);
+//        }
+//    };
 }
