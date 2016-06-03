@@ -1,7 +1,7 @@
 package com.aspsine.multithreaddownload;
 
 /**
- * Created by Aspsine on 2015/7/14.
+ * 下载配置类
  */
 public class DownloadConfiguration {
 
@@ -9,23 +9,39 @@ public class DownloadConfiguration {
 
     public static final int DEFAULT_THREAD_NUMBER = 1;
 
-    /**
-     * thread number in the pool
-     */
+    //最大线程数
     private int maxThreadNum;
 
-    /**
-     * thread number for each download
-     */
+    //启动线程数
     private int threadNum;
 
+    //是否开启Service去下载
+    private boolean luanchServiceDownload=false;
 
-    /**
-     * init with default value
-     */
+    //是否后台下载，仅对Service有效
+    private boolean isBackground=false;
+
+
     public DownloadConfiguration() {
         maxThreadNum = DEFAULT_MAX_THREAD_NUMBER;
         threadNum = DEFAULT_THREAD_NUMBER;
+    }
+
+
+    public boolean isLuanchServiceDownload() {
+        return luanchServiceDownload;
+    }
+
+    public boolean isBackground() {
+        return isBackground;
+    }
+
+    public void setBackground(boolean background) {
+        isBackground = background;
+    }
+
+    public void setLuanchServiceDownload(boolean luanchServiceDownload) {
+        this.luanchServiceDownload = luanchServiceDownload;
     }
 
     public int getMaxThreadNum() {

@@ -81,7 +81,7 @@ public class DownloaderImpl implements IDownloader, IConnectTask.IConnectListene
     public void start() {
         mStatus = DownloadStatus.STATUS_STARTED;
         mResponse.onStarted();
-        connect();
+        connectServer();
     }
 
     @Override
@@ -122,8 +122,11 @@ public class DownloaderImpl implements IDownloader, IConnectTask.IConnectListene
         mResponse.onConnected(time, length, isAcceptRanges);
         mDownloadInfo.setAcceptRanges(isAcceptRanges);
         mDownloadInfo.setLength(length);
+        
         //真正的开始下载文件
         prepareDownload(length, isAcceptRanges);
+
+
     }
 
     @Override
@@ -145,11 +148,11 @@ public class DownloaderImpl implements IDownloader, IConnectTask.IConnectListene
     }
 
     @Override
-    public void onDownloadProgress(int thread_id,long thread_finished,long all_finished, long length) {
+    public void onDownloadProgress(int thread_id, long thread_finished, long all_finished, long length) {
         mStatus = DownloadStatus.STATUS_PROGRESS;
         // calculate percent
         final int percent = (int) (all_finished * 100 / length);
-        mResponse.onDownloadProgress(thread_id,thread_finished,all_finished, length, percent);
+        mResponse.onDownloadProgress(thread_id, thread_finished, all_finished, length, percent);
     }
 
     @Override
@@ -191,7 +194,7 @@ public class DownloaderImpl implements IDownloader, IConnectTask.IConnectListene
     }
 
     //第一步，开启子线程去连接服务器，获取文件的长度及是否支持分块下载
-    private void connect() {
+    private void connectServer() {
         mConnectTask = new ConnectTaskImpl(mRequest.getUri(), this);
         mExecutor.execute(mConnectTask);
     }
@@ -199,16 +202,22 @@ public class DownloaderImpl implements IDownloader, IConnectTask.IConnectListene
 
     //第二步，准备去下载文件
     private void prepareDownload(long length, boolean acceptRanges) {
-        initDownloadTasks(length, acceptRanges);
-        // start tasks
-        for (IDownloadTask downloadTask : mDownloadTasks) {
-            mExecutor.execute(downloadTask);
+
+        if (mConfig.isLuanchServiceDownload()) {
+
+
+        } else {
+            initDownloadTasks(length, acceptRanges);
+            // start tasks
+            for (IDownloadTask downloadTask : mDownloadTasks) {
+                mExecutor.execute(downloadTask);
+            }
         }
     }
 
-    //TODO
     private void initDownloadTasks(long length, boolean acceptRanges) {
         mDownloadTasks.clear();
+        //分块下载
         if (acceptRanges) {
             List<ThreadInfo> threadInfos = getMultiThreadInfos(length);
             int finished = 0;
@@ -224,6 +233,7 @@ public class DownloaderImpl implements IDownloader, IConnectTask.IConnectListene
                 mDownloadTasks.add(new MultiDownloadTask(mDownloadInfo, info, mDBManager, this));
             }
         } else {
+            //不分块下载
             ThreadInfo info = getSingleThreadInfo();
             mDownloadTasks.add(new SingleDownloadTask(mDownloadInfo, info, this));
         }
@@ -234,7 +244,7 @@ public class DownloaderImpl implements IDownloader, IConnectTask.IConnectListene
         //首先从数据库查询线程的信息
         final List<ThreadInfo> threadInfos = mDBManager.getThreadInfos(mTag);
 
-        //如果没有下载过，则将线程信息写入数据库
+        //如果没有下载过，则将线程分配信息写入数据库
         if (threadInfos.isEmpty()) {
             final int threadNum = mConfig.getThreadNum();
             final long average = length / threadNum;  //每个线程下载的大小
@@ -254,7 +264,6 @@ public class DownloaderImpl implements IDownloader, IConnectTask.IConnectListene
         return threadInfos;
     }
 
-    //TODO
     private ThreadInfo getSingleThreadInfo() {
         ThreadInfo threadInfo = new ThreadInfo(0, mTag, mRequest.getUri(), 0);
         return threadInfo;

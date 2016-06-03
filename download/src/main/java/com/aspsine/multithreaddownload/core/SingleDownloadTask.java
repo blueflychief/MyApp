@@ -11,7 +11,7 @@ import java.net.HttpURLConnection;
 import java.util.Map;
 
 /**
- * Created by Aspsine on 2015/7/22.
+ * 不支持多线续传任务
  */
 public class SingleDownloadTask extends DownloadTaskImpl {
 
@@ -21,7 +21,7 @@ public class SingleDownloadTask extends DownloadTaskImpl {
 
     @Override
     protected void insertIntoDB(ThreadInfo info) {
-        // don't support
+        // 单线程下载开始时不需要向数据库写入
     }
 
     @Override

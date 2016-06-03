@@ -3,7 +3,6 @@ package com.infinite.myapp;
 import android.app.Application;
 import android.content.Context;
 
-import com.aspsine.multithreaddownload.DownloadConfiguration;
 import com.aspsine.multithreaddownload.DownloadManager;
 import com.infinite.myapp.config.AppConfig;
 import com.infinite.myapp.utils.networkutil.Excalibur;
@@ -33,7 +32,8 @@ public class MyApplication extends Application {
         super.onCreate();
         sINSTANCE = this;
         Excalibur.getInstance().init(this, AppConfig.APP_ROOT_URL);
-        initDownloader();
+        //初始化下载
+        DownloadManager.getInstance().initDownloadManager(this, 10, 3);
 //        //JPush config
 //        initJPushConfig();
 //        LeakCanary.install(this);
@@ -47,12 +47,5 @@ public class MyApplication extends Application {
 //        JPushInterface.init(this);
 //    }
 
-
-    private void initDownloader() {
-        DownloadConfiguration configuration = new DownloadConfiguration();
-        configuration.setMaxThreadNum(10);
-        configuration.setThreadNum(3);
-        DownloadManager.getInstance().init(getApplicationContext(), configuration);
-    }
 
 }

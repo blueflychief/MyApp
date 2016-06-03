@@ -16,6 +16,8 @@ public class DownloadStatusDeliveryImpl implements DownloadStatusDelivery {
     private Executor mDownloadStatusPoster;
 
     public DownloadStatusDeliveryImpl(final Handler handler) {
+
+        //初始化时execute不执行，当DownloadResponseImpl调用mDelivery.post(mDownloadStatus)方法时，执行第30行的post()方法，调用execute()，然后就走run();
         mDownloadStatusPoster = new Executor() {
             @Override
             public void execute(Runnable command) {

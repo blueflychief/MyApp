@@ -52,7 +52,8 @@ public class TestActivity extends BaseActivity {
 
 
 //                    url = "http://sw.bos.baidu.com/sw-search-sp/software/50a1366f748/jre_8u91_windows_i586_8.0.910.15.exe";
-                    url = "http://sw.bos.baidu.com/sw-search-sp/software/7811f6cde4b/QQ_8.3.18038.0_setup.exe";
+//                    url = "http://sw.bos.baidu.com/sw-search-sp/software/7811f6cde4b/QQ_8.3.18038.0_setup.exe";
+                    url = "http://kuaikuai.oss-cn-beijing.aliyuncs.com/upload/d2a226b1-3344-499c-8acc-d08831334a77.mp4";
                     final DownloadRequestInfo requestInfo = new DownloadRequestInfo.Builder()
                             .setFileName("jre_8u91_windows_i586_8.0.910.15.exe")
                             .setUri(url)

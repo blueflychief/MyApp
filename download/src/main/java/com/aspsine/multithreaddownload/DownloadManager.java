@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Created by Aspsine on 2015/7/14.
+ * 下载管理类
  */
 public class DownloadManager implements IDownloader.IDownloaderDestroyedListener {
     public static final String TAG = DownloadManager.class.getSimpleName();
@@ -56,8 +56,22 @@ public class DownloadManager implements IDownloader.IDownloaderDestroyedListener
         mDownloaderMap = new LinkedHashMap<String, IDownloader>();
     }
 
-    public void init(Context context) {
-        init(context, new DownloadConfiguration());
+
+    /**
+     * 初始化下载管理，一般在Application中初始化
+     *
+     * @param context
+     */
+    public void initDownloadManager(Context context, int max_thread, int run_thread) {
+        initConfig(context, max_thread, run_thread);
+    }
+
+
+    public void initConfig(Context context, int max_thread, int run_thread) {
+        DownloadConfiguration configuration = new DownloadConfiguration();
+        configuration.setMaxThreadNum(max_thread);
+        configuration.setThreadNum(run_thread);
+        init(context, configuration);
     }
 
     public void init(Context context, @NonNull DownloadConfiguration config) {

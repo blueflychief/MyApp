@@ -5,7 +5,7 @@ import android.content.Context;
 import java.util.List;
 
 /**
- * Created by aspsine on 15-4-19.
+ * 下载数据库管理类
  */
 public class DataBaseManager {
     private static DataBaseManager sDataBaseManager;

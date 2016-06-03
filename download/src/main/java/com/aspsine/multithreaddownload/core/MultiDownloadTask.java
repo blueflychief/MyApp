@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 多线程下载任务
+ * 支持多点续传多线程下载任务
  */
 public class MultiDownloadTask extends DownloadTaskImpl {
 
