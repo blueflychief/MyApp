@@ -5,9 +5,6 @@
     <color name="colorAccent">#FF4081</color>
 
 
-    <color name="gray">#999999</color>
-    <color name="dark">#000000</color>
-    <color name="white">#ffffff</color>
     <color name="color_primary_red">#f44336</color>
     <color name="color_primary_red_dark">#d32f2f</color>
     <color name="color_primary_green">#4caf50</color>
@@ -30,4 +27,28 @@
 
     <color name="public_background_color">#F1F1F1</color>          <!--背景颜色，Activity背景-->
     <color name="public_item_background_color">#FFFFFF</color>          <!--Item背景颜色-->
+
+
+    <!--纯色-->
+    <color name="public_gray">#999999</color>
+    <color name="public_blank">#000000</color>
+    <color name="public_red">#FF0000</color>
+    <color name="public_green">#00FF00</color>
+    <color name="public_blue">#0000FF</color>
+    <color name="public_yellow">#FFFF00</color>
+    <color name="public_pink">#FF00FF</color>
+    <color name="public_sky_blue">#00FFFF</color>
+    <color name="public_white">#FFFFFF</color>
+
+    <!--透明度-->
+    <color name="transparent">#00000000</color>
+    <color name="transparent_9">#16000000</color>
+    <color name="transparent_8">#32000000</color>
+    <color name="transparent_7">#48000000</color>
+    <color name="transparent_6">#64000000</color>
+    <color name="transparent_5">#80000000</color>
+    <color name="transparent_4">#96000000</color>
+    <color name="transparent_3">#B2000000</color>
+    <color name="transparent_2">#C8000000</color>
+    <color name="transparent_1">#E4000000</color>
 </resources>

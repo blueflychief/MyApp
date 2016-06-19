@@ -7,6 +7,30 @@
     <dimen name="menuWidth_24dp">24dp</dimen>
     <dimen name="menuWidth_48dp">48dp</dimen>
 
+
+    <dimen name="dimens_1dp">1dp</dimen>
+    <dimen name="dimens_2dp">2dp</dimen>
+    <dimen name="dimens_4dp">4dp</dimen>
+    <dimen name="dimens_6dp">6dp</dimen>
+    <dimen name="dimens_8dp">8dp</dimen>
+    <dimen name="dimens_10dp">10dp</dimen>
+    <dimen name="dimens_12dp">12dp</dimen>
+    <dimen name="dimens_14dp">14dp</dimen>
+    <dimen name="dimens_16dp">16dp</dimen>
+    <dimen name="dimens_18dp">18dp</dimen>
+    <dimen name="dimens_20dp">20dp</dimen>
+    <dimen name="dimens_22dp">22dp</dimen>
+    <dimen name="dimens_24dp">24dp</dimen>
+    <dimen name="dimens_26dp">26dp</dimen>
+    <dimen name="dimens_28dp">28dp</dimen>
+    <dimen name="dimens_30dp">30dp</dimen>
+    <dimen name="dimens_32dp">32dp</dimen>
+    <dimen name="dimens_34dp">34dp</dimen>
+    <dimen name="dimens_36dp">36dp</dimen>
+    <dimen name="dimens_38dp">38dp</dimen>
+    <dimen name="dimens_40dp">40dp</dimen>
+
+
     <dimen name="font_size_1dp">1dp</dimen>
     <dimen name="font_size_2dp">2dp</dimen>
     <dimen name="font_size_4dp">4dp</dimen>
@@ -113,5 +137,7 @@
     <dimen name="padding_96">96dp</dimen>
     <dimen name="padding_128">128dp</dimen>
 
+
+    <dimen name="public_max_size">200dp</dimen>
 
 </resources>

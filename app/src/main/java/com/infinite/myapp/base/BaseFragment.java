@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.infinite.myapp.utils.MyLogger;
-import com.infinite.myapp.view.LoadingLayout;
+import com.infinite.myapp.widget.LoadingLayout;
 
 public abstract class BaseFragment extends Fragment {
     private boolean isVisible = false;//当前Fragment是否可见

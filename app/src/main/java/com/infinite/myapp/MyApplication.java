@@ -2,10 +2,9 @@ package com.infinite.myapp;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Configuration;
 
-import com.aspsine.multithreaddownload.DownloadManager;
-import com.infinite.myapp.config.AppConfig;
-import com.infinite.myapp.utils.networkutil.Excalibur;
+import java.util.Locale;
 
 
 /**
@@ -16,6 +15,9 @@ public class MyApplication extends Application {
     private static MyApplication sINSTANCE;
 
     public static String S_REGISTION_ID = "";
+
+    private float oldFontScale;
+    private Locale oldLocale;
 
     public static synchronized MyApplication getInstance() {
         return sINSTANCE;
@@ -31,21 +33,23 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         sINSTANCE = this;
-        Excalibur.getInstance().init(this, AppConfig.APP_ROOT_URL);
-        //初始化下载
-        DownloadManager.getInstance().initDownloadManager(this, 10, 3);
+
+        oldFontScale = getResources().getConfiguration().fontScale;
+        oldLocale = getResources().getConfiguration().locale;
 //        //JPush config
 //        initJPushConfig();
 //        LeakCanary.install(this);
 //        MyLogger.e("UserAgent-->>" + DeviceUtil.getUser_Agent());
     }
 
-//    private void initJPushConfig() {
-//        // 使用模拟器时注释掉这两句，否则崩溃。设置开启日志,发布时请关闭日志
-//        JPushInterface.setDebugMode(BuildConfig.MY_LOG);
-//        // 初始化 JPush
-//        JPushInterface.init(this);
-//    }
-
-
+    /**
+     * 修改系统字号和地区时，会导致crash
+     */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+//        if (oldFontScale != newConfig.fontScale || !oldLocale.equals(newConfig.locale)) {
+//            System.exit(0);
+//        }
+    }
 }

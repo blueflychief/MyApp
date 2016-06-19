@@ -32,6 +32,14 @@
     </style>
 
 
+    <style name="AppThemeCompat.FullScreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:windowBackground">@color/public_background_color</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
     <!-- 设置toolbar的整体属性 -->
     <style name="Toolbar" parent="Base.Widget.AppCompat.Toolbar">
         <item name="android:layout_width">match_parent</item>
@@ -62,7 +70,7 @@
     <!-- toolbar 的标题字体 -->
     <style name="TextAppearance.AppCompat.Title.Toolbar" parent="TextAppearance.AppCompat.Title">
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/public_white</item>
     </style>
 
     <!-- toolbar上面的menu整体样式 -->

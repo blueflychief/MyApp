@@ -8,7 +8,7 @@
     android:paddingBottom="15dp"
     android:paddingTop="15dp">
 
-    <com.infinite.myapp.view.ProgressWheel
+    <com.infinite.myapp.widget.ProgressWheel
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_weight="1"

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/public_sky_blue">   <!--必须写！水波纹扩散颜色-->
+
+
+    <!--如果不要其他效果，则这样写就可以了，控件直角-->
+    <!--<item android:drawable="@color/public_blue" />-->
+
+
+    <!--如果需要其他效果（如圆角），则这样写-->
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/public_blue" />
+            <corners android:radius="@dimen/dimens_4dp" />
+        </shape>
+    </item>
+
+</ripple>
+
+

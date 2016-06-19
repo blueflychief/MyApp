@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/public_background_color"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_10"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/public_white"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dimens_24dp"
+                android:layout_height="@dimen/dimens_24dp"
+                android:layout_margin="@dimen/margin_8"
+                android:src="@mipmap/ic_login_phone" />
+
+            <EditText
+                android:id="@+id/et_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_10"
+                android:background="@null"
+                android:digits="0123456789"
+                android:hint="@string/str_enter_phone_number"
+                android:maxLength="12"
+                android:singleLine="true"
+                android:textSize="@dimen/font_size_14sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="@dimen/dimens_40dp"
+            android:layout_marginRight="@dimen/dimens_40dp"
+            android:background="@color/public_divider_line_color" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/public_white"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dimens_24dp"
+                android:layout_height="@dimen/dimens_24dp"
+                android:layout_margin="@dimen/margin_8"
+                android:src="@mipmap/ic_login_pwd" />
+
+            <EditText
+                android:id="@+id/et_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_10"
+                android:background="@null"
+                android:hint="@string/str_enter_password"
+                android:maxLength="16"
+                android:singleLine="true"
+                android:textSize="@dimen/font_size_14sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/bt_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_20"
+            android:layout_marginRight="@dimen/padding_20"
+            android:layout_marginTop="@dimen/margin_30"
+            android:background="@drawable/btn_blue_round"
+            android:padding="@dimen/padding_4"
+            android:text="@string/str_login"
+            android:textColor="@color/public_white"
+            android:textSize="@dimen/font_size_14sp" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimens_20dp"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/tv_wixin_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawablePadding="@dimen/padding_2"
+                android:drawableTop="@mipmap/ic_login_phone"
+                android:gravity="center"
+                android:text="微信"
+                android:textColor="@color/public_blank"
+                android:textSize="@dimen/font_size_14sp" />
+
+            <TextView
+                android:id="@+id/tv_qq_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawablePadding="@dimen/padding_2"
+                android:drawableTop="@mipmap/ic_login_phone"
+                android:gravity="center"
+                android:text="QQ"
+                android:textColor="@color/public_blank"
+                android:textSize="@dimen/font_size_14sp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

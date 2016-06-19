@@ -189,6 +189,7 @@ public class PackageUtils {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+        MyLogger.i("-----version_code:"+versionCodeDesc);
         return versionCodeDesc;
     }
 }

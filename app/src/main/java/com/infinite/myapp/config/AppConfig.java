@@ -30,8 +30,22 @@ public class AppConfig {
     public static final String APP_LOG_TAG = "[MyApp]";
 
 
+
+
     /*
      * Internal test url
      */
     public static final String APP_ROOT_URL = BuildConfig.API_HOST;
+
+    // 在线缓存在1分钟内可读取
+    public static final int ONLINE_CACHE_READ_TIMEOUT = 60;
+
+    // 离线时缓存保存4周
+    public static final int OFFLINE_CACHE_SAVE_TIMEOUT = 60 * 60 * 24 * 4 * 7;
+
+    // 离线时缓存10M
+    public static final int OFFLINE_CACHE_SIZE = 10 * 1024 * 1024;
+
+    //okhttp授权user
+    public static final String OKHTTP_AUTHORIZATION_USER = "13912345678";
 }

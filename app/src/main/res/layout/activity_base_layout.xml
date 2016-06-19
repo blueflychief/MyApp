@@ -7,13 +7,13 @@
     android:orientation="vertical"
     tools:context="com.infinite.myapp.MainActivity">
 
-    <com.infinite.myapp.view.AppBar
+    <com.infinite.myapp.widget.AppBar
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height_normal"
         app:navigationGravity="center_vertical" />
 
-    <com.infinite.myapp.view.LoadingLayout
+    <com.infinite.myapp.widget.LoadingLayout
         android:id="@+id/ll_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

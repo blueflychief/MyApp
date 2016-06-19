@@ -1,14 +1,16 @@
 package com.infinite.myapp.base;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.infinite.myapp.R;
 import com.infinite.myapp.utils.LoadingUtils;
-import com.infinite.myapp.view.AppBar;
-import com.infinite.myapp.view.LoadingLayout;
+import com.infinite.myapp.widget.AppBar;
+import com.infinite.myapp.widget.LoadingLayout;
 
 /**
  * Created by Administrator on 2016-05-29.
@@ -39,11 +41,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void getData() {
         Intent intent = getIntent();
-        if (intent != null) {
-            initData(intent);
-        } else {
-            initData();
-        }
+        initData(intent);
 
     }
 
@@ -51,10 +49,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     public abstract int getLayoutId();
 
     public void initData(Intent intent) {
-
-    }
-
-    public void initData() {
 
     }
 
@@ -83,6 +77,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
+    }
+
+    @Override
+    public Resources getResources() {
+        Resources res = super.getResources();
+        Configuration config = new Configuration();
+        config.setToDefaults();
+        res.updateConfiguration(config, res.getDisplayMetrics());
+        return res;
     }
 
 }

@@ -3,7 +3,7 @@ package com.infinite.myapp.utils;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 
-import com.infinite.myapp.view.MyDialogFragment;
+import com.infinite.myapp.widget.MyDialogFragment;
 
 /**
  * Created by Administrator on 2016-05-29.
