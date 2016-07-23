@@ -23,7 +23,7 @@
         android:layout_height="48dp"
         android:orientation="horizontal">
 
-        <com.infinite.myapp.widget.MyNavigationButton
+        <com.infinite.myapp.widget.TabNavigationButton
             android:id="@+id/id_indicator_one"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
@@ -31,9 +31,10 @@
             android:padding="5dp"
             app:nav_icon="@mipmap/ic_menu_start_conversation"
             app:nav_text="@string/tab_weixin"
+            app:nav_msg_mode="red_dot"
             app:nav_text_size="12sp" />
 
-        <com.infinite.myapp.widget.MyNavigationButton
+        <com.infinite.myapp.widget.TabNavigationButton
             android:id="@+id/id_indicator_two"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
@@ -43,7 +44,7 @@
             app:nav_text="@string/tab_contact"
             app:nav_text_size="12sp" />
 
-        <com.infinite.myapp.widget.MyNavigationButton
+        <com.infinite.myapp.widget.TabNavigationButton
             android:id="@+id/id_indicator_three"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
@@ -53,7 +54,7 @@
             app:nav_text="@string/tab_find"
             app:nav_text_size="12sp" />
 
-        <com.infinite.myapp.widget.MyNavigationButton
+        <com.infinite.myapp.widget.TabNavigationButton
             android:id="@+id/id_indicator_four"
             android:layout_width="0dp"
             android:layout_height="fill_parent"

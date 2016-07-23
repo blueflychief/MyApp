@@ -45,11 +45,20 @@
     </declare-styleable>
 
 
+
     <!--底部导航按钮-->
-    <declare-styleable name="MyNavigationButton">
+    <declare-styleable name="TabNavigationButton">
         <attr name="nav_icon" format="reference" />
         <attr name="nav_color" format="color" />
         <attr name="nav_text" format="string" />
         <attr name="nav_text_size" format="dimension" />
+        <attr name="nav_text_color" format="color" />
+        <attr name="nav_msg_text" format="string" />
+        <attr name="nav_msg_text_size" format="dimension" />
+        <attr name="nav_red_dot_radius" format="dimension" />
+        <attr name="nav_msg_mode" format="enum">
+            <enum name="red_dot" value="0" />
+            <enum name="message_text" value="1" />
+        </attr>
     </declare-styleable>
 </resources>

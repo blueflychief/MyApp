@@ -20,7 +20,7 @@ import com.infinite.myapp.utils.MyClickListener;
 import com.infinite.myapp.utils.MyLogger;
 import com.infinite.myapp.utils.ToastUtils;
 import com.infinite.myapp.widget.LoadingLayout;
-import com.infinite.myapp.widget.MyNavigationButton;
+import com.infinite.myapp.widget.TabNavigationButton;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     private List<Fragment> mTabs = new ArrayList<Fragment>();
     private MainPagerAdapter mAdapter;
     private List<Integer> mTabIds = new ArrayList<>();
-    private List<MyNavigationButton> mTabButtons = new ArrayList<MyNavigationButton>();
+    private List<TabNavigationButton> mTabButtons = new ArrayList<TabNavigationButton>();
     private int mCurrentId = 0;
 
     private String[] mTitles = new String[]{
@@ -76,10 +76,10 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     }
 
     private void initTabIndicator() {
-        MyNavigationButton one = (MyNavigationButton) findViewById(R.id.id_indicator_one);
-        MyNavigationButton two = (MyNavigationButton) findViewById(R.id.id_indicator_two);
-        MyNavigationButton three = (MyNavigationButton) findViewById(R.id.id_indicator_three);
-        MyNavigationButton four = (MyNavigationButton) findViewById(R.id.id_indicator_four);
+        TabNavigationButton one = (TabNavigationButton) findViewById(R.id.id_indicator_one);
+        TabNavigationButton two = (TabNavigationButton) findViewById(R.id.id_indicator_two);
+        TabNavigationButton three = (TabNavigationButton) findViewById(R.id.id_indicator_three);
+        TabNavigationButton four = (TabNavigationButton) findViewById(R.id.id_indicator_four);
         mTabIds.add(R.id.id_indicator_one);
         mTabIds.add(R.id.id_indicator_two);
         mTabIds.add(R.id.id_indicator_three);
@@ -109,8 +109,8 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
         // + positionOffset);
 
         if (positionOffset > 0) {
-            MyNavigationButton left = mTabButtons.get(position);
-            MyNavigationButton right = mTabButtons.get(position + 1);
+            TabNavigationButton left = mTabButtons.get(position);
+            TabNavigationButton right = mTabButtons.get(position + 1);
 
             left.setIconAlpha(1 - positionOffset);
             right.setIconAlpha(positionOffset);
